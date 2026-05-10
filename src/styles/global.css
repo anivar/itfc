@@ -248,10 +248,31 @@
 /* Footer: brand CSS resets .footer to width:100% margin:0 padding:62px 30px
  * (gray full-bleed band). The inner `.region-footer` has `margin:0 auto`
  * but no max-width, so its content sat at the left edge. Cap it to the
- * site container width so the address + socials line up under the body. */
-.footer .region.region-footer {
+ * site container width so the address + socials line up under the body.
+ * Then constrain `.itfc-footer-top` / `.itfc-footer-bottom` to the same
+ * width — they wrap the floated children brand CSS positions. */
+.footer .region.region-footer,
+.footer .itfc-footer-top,
+.footer .itfc-footer-bottom {
   max-width: var(--container-max);
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Slideshow text overlay: brand CSS sets `font-weight: 100` (Roboto Thin)
+ * for the body field, but we don't ship the Thin face — the browser falls
+ * back to a hairline-rendered system font that's nearly invisible on the
+ * busy slide backgrounds. Bump to a weight we actually load (400) and
+ * tighten the text-shadow so it stays legible over photographs. */
+.js-cycle .slides .field--name-body,
+.js-cycle .slides .field.field--name-body.field--type-text-with-summary {
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.js-cycle .slides h2,
+.js-cycle .slides h2 a span {
+  font-weight: 500;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 /* Small Astro attribution line in the original Drupal footer region. */
