@@ -1,66 +1,69 @@
 ---
-// Footer mirrors the 2026 Drupal footer markup so the brand stylesheet
-// (`/themes/itfc_agov_subtheme/css/itfc_style_v2.css`) styles it the
-// same as the original — `social__wrapper` + `social--<network>` pills.
+// Footer mirrors the original 2026 Drupal footer markup exactly so the
+// brand stylesheet (`/themes/itfc_agov_subtheme/css/itfc_style_v2.css`)
+// styles the social pills, address block, and copyright section natively.
+// Source: https://web.archive.org/web/20260424201529/itforchange.net
 import { FOOTER_LINKS, SITE } from '~/data/site';
 import { bp } from '~/lib/with-base';
 ---
 <footer class="footer container" role="contentinfo">
   <div class="region region-footer">
-    <section class="block block-block-content clearfix">
+    <section
+      id="block-itfc-agov-subtheme-contactaddress"
+      class="block block-block-content block-block-content52f393af-e08a-40c0-aeb5-0df52595867b clearfix"
+    >
       <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
         <p>{SITE.address}.</p>
         <p>
-          <a href={SITE.mapsUrl} rel="noopener">Directions on map.</a>
+          <a href={SITE.mapsUrl}>Directions on map.</a>
           {' '}Tel: {SITE.phone}. Email:
           {' '}<a href={SITE.emailHref}>{SITE.email}</a>
         </p>
       </div>
     </section>
 
-    <section class="block block-block-content clearfix">
+    <section
+      id="block-stayuptodate-2"
+      class="block block-block-content block-block-content69e9555f-f0f3-4dd6-b905-5b1efffa120f clearfix"
+    >
       <div class="social__wrapper field field--name-field-social-icon field--type-link field--label-visually_hidden">
         <div class="field--label sr-only">Social Icon</div>
         <div class="field__items">
-          <div class="social__item field--item">
-            <a href={SITE.social.twitter} target="_blank" rel="noopener" class="social--twitter">Follow us on Twitter</a>
-          </div>
-          <div class="social__item field--item">
-            <a href={SITE.social.facebook} target="_blank" rel="noopener" class="social--facebook">Facebook</a>
-          </div>
-          <div class="social__item field--item">
-            <a href={SITE.social.youtube} target="_blank" rel="noopener" class="social--youtube">Watch</a>
-          </div>
-          <div class="social__item field--item">
-            <a href={SITE.emailHref} class="social--contact">Contact us</a>
-          </div>
-          <div class="social__item field--item">
-            <a href={SITE.social.instagram} target="_blank" rel="noopener" class="social--instagram">Instagram</a>
-          </div>
-          <div class="social__item field--item">
-            <a href={SITE.social.newsletter} target="_blank" rel="noopener" class="social--newsletter">Newsletter</a>
-          </div>
+          <div class="social__item field--item"><a href={SITE.social.twitter} target="_blank" rel="" class="social--twitter">Follow us on Twitter</a></div>
+          <div class="social__item field--item"><a href={SITE.social.facebook} target="_blank" rel="" class="social--facebook">Facebook</a></div>
+          <div class="social__item field--item"><a href={SITE.social.youtube} target="_blank" rel="" class="social--youtube">Watch</a></div>
+          <div class="social__item field--item"><a href={SITE.emailHref} target="_blank" rel="" class="social--contact">Contact us</a></div>
+          <div class="social__item field--item"><a href={SITE.social.instagram} target="_blank" rel="" class="social--instagram">Instagram</a></div>
+          <div class="social__item field--item"><a href={SITE.social.newsletter} target="_blank" rel="" class="social--newsletter">Newsletter</a></div>
         </div>
       </div>
     </section>
 
-    <section class="block block-block-content clearfix">
+    <section
+      id="block-itfc-agov-subtheme-copyrightmessage"
+      class="block block-block-content block-block-contenta608987c-1b74-442b-b900-a54f40cda661 clearfix"
+    >
       <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
         <p>
           All content (except where explicitly stated) is licensed under a
-          {' '}<a href={SITE.license.url} rel="license noopener">{SITE.license.name}</a>
+          {' '}<a href={SITE.license.url}>{SITE.license.name}</a>
         </p>
         <p>
           International License for widescale, free reproduction and translation.
+          {' '}<a href="http://creativecommons.org/licenses/by/4.0/"><img alt="CC BY-SA" src={bp('/sites/default/files/inline-images/cc-by-sa-icon.png')} height="16" width="16" /></a>
         </p>
       </div>
     </section>
 
-    <nav role="navigation" aria-label="Footer Quick Links">
-      <h2 class="visually-hidden">Footer Quick Links</h2>
+    <nav
+      role="navigation"
+      aria-labelledby="block-itfc-agov-subtheme-footerquicklinks-2-menu"
+      id="block-itfc-agov-subtheme-footerquicklinks-2"
+    >
+      <h2 class="visually-hidden" id="block-itfc-agov-subtheme-footerquicklinks-2-menu">Footer Quick Links</h2>
       <ul class="menu nav">
         {FOOTER_LINKS.map((link) => (
-          <li><a href={bp(link.href)}>{link.label}</a></li>
+          <li><a href={bp(link.href)} target="_self" rel="">{link.label}</a></li>
         ))}
       </ul>
     </nav>

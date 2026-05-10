@@ -1,6 +1,10 @@
 ---
-// Header that mirrors the original Drupal Bootstrap navbar from
-// https://web.archive.org/web/20260424201529/itforchange.net
+// Header mirrors the original 2026 Drupal Bootstrap navbar exactly so the
+// brand stylesheet (`/themes/itfc_agov_subtheme/css/itfc_style_v2.css`)
+// styles it natively — IDs like `#block-itfc-agov-subtheme-searchform-3`
+// and `#block-itfc-agov-subtheme-mainnavigation-4` are positional anchors
+// the original CSS targets, so we keep them verbatim.
+// Source: https://web.archive.org/web/20260424201529/itforchange.net
 import { NAV, SITE } from '~/data/site';
 import { bp } from '~/lib/with-base';
 ---
@@ -8,34 +12,66 @@ import { bp } from '~/lib/with-base';
   <div class="navbar-header">
     <div class="region region-navigation">
       <a class="logo navbar-btn pull-left" href={bp('/')} title="Home" rel="home">
-        <img src={bp('/sites/default/files/high-res-itfc-logo1_4.png')} alt={SITE.name} />
+        <img src={bp('/sites/default/files/high-res-itfc-logo1_4.png')} alt="Home" />
       </a>
       <p class="navbar-text">{SITE.tagline}</p>
-      <div class="search-block-form block block-search" role="search">
-        <form action={bp('/sitemap')} method="get">
-          <div class="form-item form-type-search form-no-label form-group">
+      <div
+        class="search-block-form google-cse block block-search block-search-form-block"
+        data-drupal-selector="search-block-form"
+        id="block-itfc-agov-subtheme-searchform-3"
+        role="search"
+      >
+        <form
+          action={bp('/search-view')}
+          method="get"
+          id="search-block-form"
+          accept-charset="UTF-8"
+        >
+          <div class="form-item js-form-item form-type-search js-form-type-search form-item-keys js-form-item-keys form-no-label form-group">
             <label for="edit-keys" class="control-label sr-only">Search</label>
             <div class="input-group">
               <input
-                id="edit-keys"
+                title="Enter the terms you wish to search for."
+                data-drupal-selector="edit-keys"
                 class="form-search form-control"
-                type="search"
-                name="q"
                 placeholder="Search"
+                type="search"
+                id="edit-keys"
+                name="keys"
+                value=""
                 size="15"
+                maxlength="128"
+                data-toggle="tooltip"
               />
               <span class="input-group-btn">
-                <button type="submit" class="btn btn-primary icon-only" aria-label="Search">
+                <button
+                  type="submit"
+                  value="Search"
+                  class="button js-form-submit form-submit btn-primary btn icon-only"
+                  name=""
+                >
+                  <span class="sr-only">Search</span>
                   <span class="icon glyphicon glyphicon-search" aria-hidden="true"></span>
                 </button>
               </span>
             </div>
           </div>
+          <div
+            class="form-actions form-group js-form-wrapper form-wrapper"
+            data-drupal-selector="edit-actions"
+            id="edit-actions"
+          ></div>
         </form>
       </div>
     </div>
-    <button type="button" class="navbar-toggle collapsed" aria-controls="navbar-collapse"
-            aria-expanded="false" data-target="#navbar-collapse">
+    <button
+      type="button"
+      class="navbar-toggle collapsed"
+      data-toggle="collapse"
+      data-target="#navbar-collapse"
+      aria-controls="navbar-collapse"
+      aria-expanded="false"
+    >
       <span class="sr-only">Toggle navigation</span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
@@ -44,44 +80,46 @@ import { bp } from '~/lib/with-base';
   </div>
   <div id="navbar-collapse" class="navbar-collapse collapse">
     <div class="region region-navigation-collapsible">
-    <nav role="navigation" aria-labelledby="block-mainnavigation-menu" aria-label="Main navigation">
-      <h2 class="sr-only" id="block-mainnavigation-menu">Main navigation</h2>
-      <ul class="menu nav navbar-nav">
-        {NAV.map((item) =>
-          item.children ? (
-            <li class="expanded dropdown">
-              <a
-                href={bp(item.href)}
-                class="dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >{item.label} <span class="caret"></span></a>
-              <ul class="menu dropdown-menu">
-                {item.children.map((child) => (
-                  <li><a href={bp(child.href)}>{child.label}</a></li>
-                ))}
-              </ul>
-            </li>
-          ) : (
-            <li>
-              {item.external ? (
-                <a href={item.href} target="_self" rel="noopener">{item.label}</a>
-              ) : (
-                <a href={bp(item.href)}>{item.label}</a>
-              )}
-            </li>
-          )
-        )}
-      </ul>
-    </nav>
+      <nav
+        role="navigation"
+        aria-labelledby="block-itfc-agov-subtheme-mainnavigation-4-menu"
+        id="block-itfc-agov-subtheme-mainnavigation-4"
+      >
+        <h2 class="sr-only" id="block-itfc-agov-subtheme-mainnavigation-4-menu">Main navigation</h2>
+        <ul class="menu nav navbar-nav">
+          {NAV.map((item) =>
+            item.children ? (
+              <li class="expanded dropdown">
+                <a
+                  href={bp(item.href)}
+                  class="dropdown-toggle"
+                  data-target="#"
+                  data-toggle="dropdown"
+                >{item.label} <span class="caret"></span></a>
+                <ul class="menu dropdown-menu">
+                  {item.children.map((child) => (
+                    <li><a href={bp(child.href)} target="_self" rel="">{child.label}</a></li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li>
+                {item.external ? (
+                  <a href={item.href} target="_self" rel="">{item.label}</a>
+                ) : (
+                  <a href={bp(item.href)}>{item.label}</a>
+                )}
+              </li>
+            )
+          )}
+        </ul>
+      </nav>
     </div>
   </div>
 </header>
 <script is:inline>
-  // Vanilla JS replacements for Bootstrap 3 navbar collapse + dropdowns
-  // (we don't ship jQuery + bootstrap.js, so we wire the two interactions
-  // we actually use: mobile collapse toggle and dropdown click-toggle).
+  // Bootstrap 3 navbar interactions without jQuery: mobile collapse +
+  // dropdown click-toggle. Click outside or hit Escape to close dropdowns.
   (function () {
     var toggle = document.querySelector('.navbar-toggle');
     var collapse = document.getElementById('navbar-collapse');
@@ -113,6 +151,9 @@ import { bp } from '~/lib/with-base';
         return;
       }
       if (!e.target.closest('li.dropdown')) closeAll(null);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') closeAll(null);
     });
   })();
 </script>
