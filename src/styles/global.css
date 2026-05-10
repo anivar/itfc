@@ -97,6 +97,12 @@
   text-align: left;
 }
 .content img { height: auto; max-width: 100%; }
+/* Drupal WYSIWYG stored some inline logos (Prakriye, Bot Populi, NJNM,
+ * Karnataka OER) without width attrs. With `max-width:100%` they get
+ * upscaled past their natural size to fill the column. Cap them. */
+.content img,
+.region-content img,
+.views-row img { max-width: min(100%, 480px); height: auto; }
 /* Drupal/legacy markup occasionally nests anchors. */
 .content a a { color: inherit; }
 .content blockquote {
@@ -147,7 +153,14 @@
 .js-cycle.views_slideshow_main {
   position: relative;
   margin: 0 0 1.5rem;
-  min-height: 220px;
+  /* Floor for the reserved box. The rotator overrides this with the
+   * actual active-slide scrollHeight once images load; the floor only
+   * matters for the very first paint before measurement runs. */
+  min-height: 420px;
+}
+@media (max-width: 768px) {
+  .js-cycle.views_slideshow_cycle_main,
+  .js-cycle.views_slideshow_main { min-height: 560px; }
 }
 .js-cycle .views_slideshow_cycle_teaser_section { position: relative; }
 .js-cycle .views_slideshow_cycle_slide,
@@ -171,6 +184,9 @@
   gap: 0.5rem;
   justify-content: center;
   margin-top: 0.5rem;
+  /* Sit above the absolutely-positioned slides so dots stay clickable. */
+  position: relative;
+  z-index: 2;
 }
 .views_slideshow_pager_field_item {
   width: 10px; height: 10px;
@@ -214,20 +230,18 @@
 .view-frontpage-focus-areas .view-content { display: flex; flex-wrap: wrap; }
 .view-frontpage-focus-areas .views-row { float: left; position: relative; }
 
-/* IN THE MEDIA (first child) sits left as 8/12, FEATURED PROJECTS sits
- * right as 4/12. LATEST EVENTS (third child) clears below. Brand CSS
- * names rules for these layouts but only via `views-row.col-sm-6`
- * markers our extracted body_html doesn't carry. Shim it positionally. */
+/* IN THE MEDIA (first) sits left as 8/12, FEATURED PROJECTS (second) sits
+ * right as 4/12. Both <section>s live inside `.block-region-bottom`, which
+ * is itself inside `.col-sm-12.bs-region.bs-region--bottom`. Brand CSS
+ * names rules for these layouts but only via `views-row.col-sm-6` markers
+ * our extracted body_html doesn't carry, so we shim it positionally. */
 @media (min-width: 768px) {
-  .page-title--Home .col-sm-12.bs-region--bottom { overflow: hidden; }
-  .page-title--Home .bs-region--bottom > section:nth-child(1) {
+  .page-title--Home .col-sm-12.bs-region--bottom .block-region-bottom { overflow: hidden; }
+  .page-title--Home .bs-region--bottom .block-region-bottom > section:nth-child(1) {
     float: left; width: 66%; padding-right: 30px;
   }
-  .page-title--Home .bs-region--bottom > section:nth-child(2) {
+  .page-title--Home .bs-region--bottom .block-region-bottom > section:nth-child(2) {
     float: right; width: 32%;
-  }
-  .page-title--Home .bs-region--bottom > section:nth-child(3) {
-    clear: both; width: 100%;
   }
 }
 

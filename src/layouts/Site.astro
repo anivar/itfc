@@ -97,6 +97,26 @@ const ogImageAbs = ogImage.startsWith('http')
             dots.push(b);
           });
           block.appendChild(pager);
+          // Slides are position:absolute under .js-cycle so the parent has
+          // no intrinsic height. Measure the active slide and pin the
+          // parent to it so the next region paints below, not on top.
+          function size() {
+            var h = slides[idx].scrollHeight;
+            if (h > 0) block.style.minHeight = h + 'px';
+          }
+          size();
+          // Re-measure once each <img> inside slides finishes loading,
+          // because layout grows as images decode.
+          slides.forEach(function (s) {
+            s.querySelectorAll('img').forEach(function (img) {
+              if (!img.complete) img.addEventListener('load', size, { once: true });
+            });
+          });
+          var rT;
+          window.addEventListener('resize', function () {
+            clearTimeout(rT);
+            rT = setTimeout(size, 120);
+          });
           function go(next) {
             if (next === idx) return;
             slides[idx].classList.remove('is-active');
@@ -104,6 +124,7 @@ const ogImageAbs = ogImage.startsWith('http')
             idx = next;
             slides[idx].classList.add('is-active');
             dots[idx].classList.add('is-active');
+            size();
           }
           var timer = setInterval(function () {
             go((idx + 1) % slides.length);
