@@ -1,0 +1,63 @@
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base {
+  zoom: 1;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base:before {
+  content: '';
+  display: block;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+@media (max-width: 780px) {
+  .so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base.ow-button-align-center {
+    text-align: center;
+  }
+  .so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base.ow-button-align-center.ow-button-align-justify .sowb-button {
+    display: inline-block;
+  }
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button {
+  -ms-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 0.25;
+  -moz-border-radius: 0.25;
+  border-radius: 0.25;
+  background: #b90f0f;
+  border-width: 1px 0;
+  border: 1px solid #b90f0f;
+  color: #ffffff !important;
+  font-size: 1;
+  
+  padding: 1;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
+  padding-inline: 2;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button > span {
+  display: flex;
+  justify-content: center;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button > span [class^="sow-icon-"] {
+  font-size: 1.3em;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-icon-placement-top > span {
+  flex-direction: column;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-icon-placement-right > span {
+  flex-direction: row-reverse;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-icon-placement-bottom > span {
+  flex-direction: column-reverse;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-icon-placement-left > span {
+  align-items: start;
+}
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-button-hover:active,
+.so-widget-sow-button-flat-34388f03a2d5-592 .ow-button-base .sowb-button.ow-button-hover:hover {
+  background: #cc1111;
+  border-color: #cc1111;
+  color: #ffffff !important;
+}

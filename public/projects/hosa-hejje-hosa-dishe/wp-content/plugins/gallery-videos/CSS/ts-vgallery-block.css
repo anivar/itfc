@@ -1,0 +1,39 @@
+.ts-vgallery-preview-control,
+.tsvgallery_selector_block,
+.tsvgallery_selector_block .components-placeholder__fieldset {
+    align-items: center !important;
+}
+
+.tsvgallery_selector_block .components-placeholder__fieldset {
+    flex-direction: column;
+    -ms-flex-direction: column;
+    -webkit-box-direction: column;
+}
+
+.tsvgallery_guttenberg_block {
+    cursor: not-allowed;
+}
+
+.tsvgallery_guttenberg_block * {
+    pointer-events: none;
+}
+
+.ts_vgallery_select_block {
+    padding-right: 2px;
+    padding-left: 7px;
+    margin-top: 8px;
+    border-top: 1px solid #e2e4e7;
+    border-bottom: 1px solid #e2e4e7;
+    background-color: #fff;
+    width: max-content;
+}
+
+.ts_vgallery_select_block .components-select-control__input {
+    padding: 0 24px 0 8px;
+}
+
+.ts_vgallery_select_block .components-base-control__field {
+    margin-bottom: 0;
+    margin-top: 3px;
+    margin-left: 4px;
+}

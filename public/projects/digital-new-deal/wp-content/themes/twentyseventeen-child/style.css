@@ -1,0 +1,74 @@
+/*
+ Theme Name:   Twenty Seventeen Child
+ Theme URI:    https://itforchange.net/digital-new-deal/wp-content/themes/twentyseventeen-child/
+ Description:  Twenty Seventeen Child Theme
+ Author:       Yogesh KS
+ Author URI:   https://itforchange.net/digital-new-deal/
+ Template:     twentyseventeen
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  twentyseventeenchild
+*/
+
+.menu-scroll-down {
+	display: none;
+}
+
+.icon-arrow-right {
+	display: none;
+}
+
+.navigation-top {
+	font-family: "Lato", Sans-serif; 
+	color: #6a0dad; 
+	margin-left: 0;
+}
+
+.menu-home-page-menu-container {
+	font-size: large;
+}
+
+.custom-header {
+	width:1536px;
+	height: 922px;
+}
+
+.has-header-image.twentyseventeen-front-page .custom-header {
+	height: 922px;
+	width: 1536px;
+}
+
+
+.navigation-top a {
+	color: #552C6F;
+}
+
+a {
+	color: #552C6F;
+}
+
+
+.site-title {
+    font-size: 36px;
+    font-size: 2.25rem;
+	display: all;
+}
+.site-title, .site-title a {
+    color: #222;
+    opacity: 3.8;
+}
+
+.site-title {
+    clear: none;
+    font-size: 24px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 7.25;
+    letter-spacing: 0.08em;
+    margin: 0;
+    padding: 0;
+        padding-top: 0px;
+    text-transform: uppercase;
+}

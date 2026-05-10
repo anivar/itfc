@@ -1,0 +1,219 @@
+/*.header3 .logo img {height: 110px;}
+img.hidden-xs.sticky-logo {height: 53px;}*/
+.header3 .navbar-default .navbar-brand {padding-top: 15px;}
+.header3 .navbar-default.sticky-transparent {	background-color: #004b7f99;}
+.h1, h1{
+		font-size: 48px;
+		/*font-weight: 600;*/
+		margin-top:0;
+		line-height:1.3;
+}
+.postid-482 h1{
+	font-family: 'Georgia'!important;
+	font-size:36px;
+	font-weight:500;
+	line-height:1.4;
+}
+.postid-482 p{
+	font-family: 'Poppins'!important;
+		line-height: 1.8;
+    font-size: 17px;
+}
+.postid-482 h6{
+		font-size: 22px;
+    font-family: 'Georgia';
+    line-height: 1.5;
+		margin-top: 0;
+}
+blockquote {
+		color: #cf2e2e;
+		font-family: 'Poppins'!important;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+    border-left: 5px solid black;
+		line-height:1.4;
+		padding: 30px;
+}
+.postid-482 h2, .postid-482 h3{
+	font-weight:500!important;
+}
+.h2, h2 {
+    font-size: 48px;
+		margin-top:0;
+		line-height:1.3;
+}
+.h3, h3{line-height: 1.5;}
+.h4, h4{
+		font-size: 20px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+.h6, h6 {font-size: 15px;}
+p{line-height:1.6;}
+.interview-carousel h4{color: #111;}
+@media (min-width: 768px){
+    .site-footer .widget ul{
+    	display: inline-flex;
+    }
+    .site-footer .widget ul li{
+				margin-right: 30px;
+		}
+		.site-footer .menu-primary-menu-container {
+    text-align: right;
+		}
+}
+@media(max-width:767px){
+		.site-footer .menu-primary-menu-container {text-align: left;}}
+.site-footer .widget ul {list-style: none; color:white;font-size:16px;}
+.site-footer .widget ul li a:hover {color:#b90f0f;text-decoration:none!important;}
+.so-widget-sow-social-media-buttons .sow-social-media-button:hover{
+    transform: translateY(-5px);
+		transition: all 0.4s ease-in-out;
+		background:transparent; }
+.so-widget-sow-social-media-buttons .sow-social-media-button {
+   	height: 42px;
+    width: 42px!important;
+    padding: 10px!important;}
+.single-template-4 .entry-summary {
+    font-size: 16px;
+		line-height: 1.5;
+		margin-bottom: 30px;		
+}
+.single-template-4 .entry-header h1{
+		color: #1471A5;}
+.single-template-4 article {
+		max-width: 870px;}
+a.bfn-footnoteHook, a.bfn-footnoteRef {
+    color: #f54b15;
+    font-size: .7em;
+    font-weight: 700;
+    margin-top: -0.1em;
+    margin-left: 0.2em;
+    display: inline-block;
+		vertical-align: top;}
+.bfn-footnotesList {
+    list-style: none;
+    font-size: 16px;
+}
+.single-template-4 a{color:#f54b15;}
+.single-template-4 h2, .single-template-4 h3{font-weight: 500;}
+.single-template-4 h3{font-size:28px;}
+.single-template-4 ol, .single-template-4 ul {padding: 0;}
+.entry-comments, .entry-post-nav, .single-template-3 .entry-author {display: none;}
+.author-desc {
+    font-size: 16px;
+}
+.author-info{
+	display:inline-block;
+	margin-bottom:30px;
+}
+.single-template-4{
+	padding-top:50px;
+}
+.single-template-4 .post-thumbnail {
+    margin-bottom: 20px;
+}
+.single-template-4 hr {
+    margin-bottom: 50px;
+		border-top: 3px solid #eee;}
+
+.post-grid hr {
+    margin-top: 15px;
+    margin-bottom: 13px;
+    border-top: 2px solid #e1e1e1;
+}
+.post-grid .sow-image-container .so-widget-image{border-radius:10px;}
+.single-template-3 a.post-tag:before {
+    font-family: "FontAwesome";
+    content: "/f02c";
+    display: inline-block;
+    padding-right: 10px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 20px;
+}
+.single-template-4 .btn{background: #f54b15;
+    color: white;}
+/*.single-post .header3 .navbar-default .navbar-brand{
+		background:#b90f0f;
+}*/
+.coauthors-link {
+    font-size: 15px;
+    font-family: 'Poppins';
+}
+.single-post-author-box {
+    margin: 80px 0;
+    padding: 10px 30px;
+		background: #f6f6f6;}
+.post-author-box{
+		margin-bottom: 0;
+}
+.sobt-grid .post-card {
+    background-color: transparent;
+}
+.post-excerpt{font-size:15px;}
+a.footnote-ref {margin-right: 0.2em;}
+.sobt-grid-3 .coauthors {
+    font-size: 15px;
+    font-family: 'Poppins';
+    font-weight: 500;
+}
+.site-footer .sub-menu {
+    display: none!important;
+}
+.interview-img img{border-radius:50%;}
+@media (max-width:768px){
+		.sobt-thumbnail-bg{
+			background-position: center bottom;
+		}	
+}
+@media (max-width:600px){
+		.sobt-thumbnail-bg{
+			background-position: center bottom;
+		}
+		table.essay-table {
+				font-size: 9px!important;}
+		.essay-table td, th {padding: 5px!important;}
+	
+}
+table.essay-table {width: 100%; font-size: 15px;}
+.essay-table th{background:#00a183; color:white;}
+.essay-table td{background:#daede8;}
+.essay-table td, th {vertical-align: top;
+text-align: left;
+  padding: 12px;
+}
+.essay-table ol, .essay-table ul {padding-inline-start: 20px;}
+.post-content .wp-caption {
+    width: 100%!important;
+}
+@media (max-width:768px){
+	.single-post-author-box {
+				padding: 10px 20px;
+		}
+	.post-author-box {
+				padding: 0;
+				display: block;
+		}
+	.author-avatar{
+				margin-bottom:20px;
+		}
+	.single-header .title {
+				font-size: 36px;
+		}
+}
+.wp-caption-text{
+		color: #555;
+    font-size: 13px;
+    margin-top: 0.5em;
+    margin-bottom: 1em;
+		text-align: center;
+}
+.sobt-interviews .coauthors {
+    font-size: 20px;
+		font-weight:bold;
+}
+.sobt-interviews .coauthors {
+		align-items: start!important;
+}

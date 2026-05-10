@@ -1,0 +1,36 @@
+/*
+ Theme Name:   Musical Vibe Child
+ Theme URI:    https://wenthemes.com/
+ Description:  Musical Vibe Child Theme
+ Author:       Yogesh K S
+ Author URI:   https://itforchange.net/hosa-hejje-hosa-dishe/
+ Template:     musical-vibe
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Tags:         light, dark, two-columns, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  musical-vibe-child
+*/
+
+.main-navigation ul li a {
+	font-size: 16px;
+	font-weight: bold;
+
+}
+
+#breadcrumb {
+display: none;
+}
+
+.entry-meta {
+display: none;
+}
+
+.site-main {
+padding-left:75px;
+padding-right:75px;
+}
+
+.entry-content a { color: #fcc404; }
+
+.entry-content a:hover { color: #fcd657; }

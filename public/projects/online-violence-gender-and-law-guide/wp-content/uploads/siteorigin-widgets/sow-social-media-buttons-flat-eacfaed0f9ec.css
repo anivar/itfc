@@ -1,0 +1,112 @@
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .social-media-button-container {
+  zoom: 1;
+  text-align: left;
+  /*
+	&:after {
+		content:"";
+		display:inline-block;
+		width:100%;
+	}
+	*/
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .social-media-button-container:before {
+  content: '';
+  display: block;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .social-media-button-container:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+@media (max-width: 780px) {
+  .so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .social-media-button-container {
+    text-align: left;
+  }
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-twitter-0 {
+  color: #ffffff !important;
+  background-color: #78bdf1;
+  border: 1px solid #78bdf1;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-twitter-0.ow-button-hover:focus,
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-twitter-0.ow-button-hover:hover {
+  color: #ffffff !important;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-twitter-0:hover {
+  border-bottom: 1px solid #78bdf1;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-twitter-0.ow-button-hover:hover {
+  background-color: #78bdf1;
+  border-color: #78bdf1;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-facebook-0 {
+  color: #ffffff !important;
+  background-color: #3a5795;
+  border: 1px solid #3a5795;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-facebook-0.ow-button-hover:focus,
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-facebook-0.ow-button-hover:hover {
+  color: #ffffff !important;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-facebook-0:hover {
+  border-bottom: 1px solid #3a5795;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-facebook-0.ow-button-hover:hover {
+  background-color: #3a5795;
+  border-color: #3a5795;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-youtube-0 {
+  color: #ffffff !important;
+  background-color: #cf3427;
+  border: 1px solid #cf3427;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-youtube-0.ow-button-hover:focus,
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-youtube-0.ow-button-hover:hover {
+  color: #ffffff !important;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-youtube-0:hover {
+  border-bottom: 1px solid #cf3427;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-youtube-0.ow-button-hover:hover {
+  background-color: #cf3427;
+  border-color: #cf3427;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-instagram-0 {
+  color: #ffffff !important;
+  background-color: #3d739c;
+  border: 1px solid #3d739c;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-instagram-0.ow-button-hover:focus,
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-instagram-0.ow-button-hover:hover {
+  color: #ffffff !important;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-instagram-0:hover {
+  border-bottom: 1px solid #3d739c;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button-instagram-0.ow-button-hover:hover {
+  background-color: #3d739c;
+  border-color: #3d739c;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button {
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1em;
+  margin: 0.1em 0.1em 0.1em 0;
+  padding: 0.5em 0;
+  width: 2em;
+  text-align: center;
+  vertical-align: middle;
+  -webkit-border-radius: 0em;
+  -moz-border-radius: 0em;
+  border-radius: 0em;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec .sow-social-media-button .sow-icon-fontawesome {
+  display: inline-block;
+  height: 1em;
+}
+.so-widget-sow-social-media-buttons-flat-eacfaed0f9ec a .sow-icon-image {
+  width: 1em;
+  height: 1em;
+  background-size: cover;
+  display: inline-block;
+}

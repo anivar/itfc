@@ -1,0 +1,246 @@
+/* ----------- GLOBAL FORMATTING AND HEADER MENU --------------------- */
+body, #module-content, .panel-layout {
+  scroll-behavior: smooth;
+}
+@media (min-width: 1200px) {
+	.container {
+	  width: 85% !important;
+	}
+}
+.header2 .navbar-brand > img {
+  max-width: 75px;
+}
+
+.header2 {
+  margin-bottom: 50px;
+}
+.header2 ul#menu-header {
+		margin-top:30px;
+}
+
+h1 {
+  font-size: 3em;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 2.5em;
+  font-weight: bold;
+  margin: 30px 0;
+}
+
+h3 {
+  font-size: 2em;
+  margin: 30px 0;
+  font-family: "Poppins",sans-serif;
+}
+
+h4 {
+  font-size: 1.6em;
+  font-family: "Poppins",sans-serif;
+	margin:20px 0px;
+}
+
+h5 {
+  font-size: 1.3em;
+  font-family: "Poppins",sans-serif;
+}
+
+p,
+ul li,
+ol li {
+  line-height: 1.6em;
+}
+
+ul, ol {
+		margin-bottom:30px;
+}
+
+.footer-widget h3 {
+		font-size:20px;
+}
+
+.textwidget ul li, .textwidget ol li {
+		margin-bottom:10px;
+}
+.textwidget p {
+		margin-bottom:25px;
+}
+
+p a[href],
+.textwidget ul li a, .textwidget ol li a {
+  color: #217ed0 !important;
+}
+
+/*--------------------BUTTON COLOURS AND ANIMATION----------------------- */
+span.module-title {
+  padding: 10px 20px;
+  color: white;
+	background-color: black;
+  margin-right: 15px;
+	background-size: 200%;
+	transition: all 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+	-webkit-transition: background-position 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+  -moz-transition: background-position 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.sow-accordion-panel-header:hover span.module-title, .module-footer-nav:hover span.module-title {
+		background-position:-100% 0 !important;
+} 
+
+span.module-title-red {
+  background-image: linear-gradient(to right, black 50%, #E76161 50%) !important;
+}
+span.module-title-purple {
+  background-image: linear-gradient(to right, black 50%, #B04759 50%) !important;
+}
+span.module-title-orange {
+  background-image: linear-gradient(to right, black 50%, #F99B7D 50%) !important;
+}
+span.module-title-green {
+  background-image: linear-gradient(to right, black 50%, #8BACAA 50%) !important;
+}
+span.module-title-teal {
+	background-image: linear-gradient(to right, black 50%, #01808c 50%) !important;
+}
+
+/*
+.sow-accordion-panel-header:hover span.module-title {
+  background: #000;
+}*/
+
+a.ow-button-hover {
+		background-size: 200% !important;
+		transition: all 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+		-webkit-transition: background-position 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+    -moz-transition: background-position 0.5s cubic-bezier(0.42, 0, 0.58, 1);
+}
+a.ow-button-hover:hover {
+		background-position: -100% 0 !important;
+}
+.button-default-blue {
+		background-image: linear-gradient(to right, black 50%, #217ed0 50%) !important;
+		border:0px !important;
+}
+.button-red {
+		background-image: linear-gradient(to right, #E76161 50%, black 50%) !important;
+}
+.button-orange {
+		background-image: linear-gradient(to right, #F99B7D 50%, black 50%) !important;
+}
+.button-purple {
+		background-image: linear-gradient(to right, #B04759 50%, black 50%) !important;
+}
+.button-green {
+		background-image: linear-gradient(to right, #8BACAA 50%, black 50%) !important;
+}
+.button-teal {
+		background-image: linear-gradient(to right, #01808c 50%, black 50%) !important;
+}
+.button-default-black {
+		background-image: linear-gradient(to right, #217ed0 50%, black 50%) !important;
+		border:0px !important;
+}
+/*
+a.ow-button-hover:hover {
+    -webkit-transition: background-color 400ms linear;
+    -ms-transition: background-color 400ms linear;
+    transition: background-color 400ms linear;
+}*/
+
+/* ----------------- STICKY PAGE NAV --------------------------------*/
+#module-content .panel-grid-cell:nth-of-type(2) {
+		position:sticky;
+		top:30px;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+a[href].sp-floating-btn {
+		bottom:10px;
+		right:-65px;
+		left: unset;
+		font-size:18px;
+		border-radius: 0 !important;
+		width:145px;
+}
+
+ul#menu-module-2 li, ul#menu-module-5 li, ul#menu-footer li {
+		list-style: none;
+		margin-bottom: 10px;
+}
+ul#menu-module-2 li a[href], ul#menu-module-5 li a[href], ul#menu-footer li a[href] {
+		color: #217ed0;
+}
+ul#menu-footer li a[href] {
+		font-weight:bold;
+}
+ul#menu-footer li a[href]:hover {
+		color: white;
+}
+/* --------------------------GO TO TOP BUTTON ------------------------*/
+
+#goto-top-desktop a[href].sp-floating-btn {
+		right:-15px;
+		width:unset;
+}
+body.home #goto-top-desktop {display:none;visibility:hidden;}
+/* ------------------------- READING PROGRESS INDICATOR -------------*/
+
+.progress-container {
+		position: fixed;
+		width:100%;
+		height:3px;
+		z-index:9999;
+		top:0;
+		left:0;
+}
+#readingBar {
+		height:3px;
+		width:0px;
+		-webkit-transition: width 100ms ease;
+    -o-transition: width 100ms ease;
+    transition: width 100ms ease;
+    background-color: #217ed0;
+		box-shadow: 0px 2px 3px 2px rgba(33,126,208,0.45);
+		-webkit-box-shadow: 0px 2px 3px 2px rgba(33,126,208,0.45);
+		-moz-box-shadow: 0px 2px 3px 2px rgba(33,126,208,0.45);
+}
+/* ------------------------- MEDIA QUERIES ------------------------- */
+
+@media screen and (max-width: 768px) {
+		#module-accordion .sow-accordion-title {
+				font-size:26px !important;
+		}
+		span.module-title {
+				padding:8px 15px;
+		}
+		.navbar.header2 {
+ 				margin-bottom: 30px;
+		}
+		.navbar.header2 .navbar-right {
+				background: white;
+				color: #000;
+				border-bottom: 1px solid;
+		}
+		.navbar .dropdown-menu > li > a {
+				color: #000;
+				font-weight: 400 !important;
+		}
+		.navbar.header2 .navbar-collapse ul > li.active > a, .navbar.header2 .navbar-collapse ul > li > a:hover, .navbar.header2 .navbar-collapse ul > li > a:focus {
+				color:#217ed0 !important;
+		}
+		#goto-top-desktop a[href].sp-floating-btn {
+				right:-15px;
+				width:unset;
+				bottom:80px;
+		}
+}
