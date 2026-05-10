@@ -46,6 +46,16 @@ SUBDOMAIN_HREF_RE = re.compile(
 APEX_HREF_RE = re.compile(
     r'(href|src)="https?://(?:www\.)?itforchange\.net/?', re.I
 )
+# Catch bare / HTML-entity-encoded variants the href= regex misses
+# (plain text mentions, &quot;-wrapped attribute values, image alt
+# text, etc.). The result becomes a same-origin path so the link still
+# resolves locally.
+SUBDOMAIN_BARE_RE = re.compile(
+    r'https?://(annual-reports|projects)\.itforchange\.net/?', re.I
+)
+APEX_BARE_RE = re.compile(
+    r'https?://(?:www\.)?itforchange\.net/?', re.I
+)
 
 INDEX_PHP_HREF_RE = re.compile(
     r'href="/?index\.php/([^"#?]+)([#?][^"]*)?"', re.I
@@ -86,18 +96,28 @@ def strip_event_handlers(body: str) -> tuple[str, bool]:
 
 def rewrite_subdomain(body: str) -> tuple[str, int]:
     n = [0]
-    def repl(m: re.Match) -> str:
+    def href(m: re.Match) -> str:
         n[0] += 1
         return f'{m.group(1)}="/{m.group(2)}/'
-    return SUBDOMAIN_HREF_RE.sub(repl, body), n[0]
+    body = SUBDOMAIN_HREF_RE.sub(href, body)
+    def bare(m: re.Match) -> str:
+        n[0] += 1
+        return f'/{m.group(1)}/'
+    body = SUBDOMAIN_BARE_RE.sub(bare, body)
+    return body, n[0]
 
 
 def rewrite_apex(body: str) -> tuple[str, int]:
     n = [0]
-    def repl(m: re.Match) -> str:
+    def href(m: re.Match) -> str:
         n[0] += 1
         return f'{m.group(1)}="/'
-    return APEX_HREF_RE.sub(repl, body), n[0]
+    body = APEX_HREF_RE.sub(href, body)
+    def bare(m: re.Match) -> str:
+        n[0] += 1
+        return '/'
+    body = APEX_BARE_RE.sub(bare, body)
+    return body, n[0]
 
 
 def rewrite_index_php(body: str, by_slug: set[str], aliases: dict[str, str]) -> tuple[str, int, int]:

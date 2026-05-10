@@ -5,6 +5,8 @@ dist/
 
 # scratch outputs from gap/audit scripts
 scripts/_gaps.json
+scripts/_classified.json
+scripts/_classified_report.json
 
 # dependencies
 node_modules/
