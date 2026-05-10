@@ -278,14 +278,52 @@ button.site-nav__top {
 .aside ul { list-style: none; padding: 0; margin: 0; }
 .aside li { margin: 0.25rem 0; }
 
-/* ─── Drupal Views slideshow without JS ──────────────────────────────────
- * The captured Drupal markup ships every slide and relies on Drupal's
- * cycle JS to rotate them. We don't ship that JS, so 6 hero banners
- * stack vertically. Honour the `…cycle_hidden` class so only the lead
- * slide renders. */
-.views_slideshow_cycle_hidden { display: none !important; }
+/* ─── Drupal Views slideshow (cycling) ───────────────────────────────────
+ * Original Drupal ships the markup + cycle JS; we re-implement the
+ * fade-cycle in ~30 lines of vanilla JS (see Site.astro). Slides stack
+ * via absolute positioning; the active slide gets `.is-active`.
+ *
+ * No-JS / pre-hydration fallback: only the first slide renders (the
+ * Drupal markup already marks 5 of 6 with `views_slideshow_cycle_hidden`),
+ * so the page never shows a stack of overlapping cards. */
+.views_slideshow_cycle_main,
+.views_slideshow_main {
+  position: relative;
+  margin: 0 0 1.5rem;
+  min-height: 220px;
+}
+.views_slideshow_cycle_teaser_section { position: relative; }
+.views_slideshow_cycle_slide,
+.views_slideshow_slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 700ms ease;
+  pointer-events: none;
+}
+.views_slideshow_cycle_slide:first-child,
+.views_slideshow_slide:first-child {
+  position: relative;       /* first slide drives container height */
+  opacity: 1;
+  pointer-events: auto;
+}
+.views_slideshow_cycle_slide.is-active,
+.views_slideshow_slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 1;
+}
 .views_slideshow_cycle_main img,
-.view-slideshow img { width: 100%; height: auto; }
+.views_slideshow_slide img {
+  max-width: 100%;
+  height: auto;
+}
+.views_slideshow_pager_fields { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; }
+.views_slideshow_pager_field_item {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--color-rule, #ccc); border: 0; cursor: pointer; padding: 0;
+}
+.views_slideshow_pager_field_item.is-active { background: var(--color-editorial, #6b1f1f); }
 
 .tag-pill {
   background: var(--color-tag);
