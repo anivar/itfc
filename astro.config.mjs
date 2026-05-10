@@ -38,8 +38,8 @@ export default defineConfig({
     sitemap({
       changefreq: 'monthly',
       priority: 0.5,
-      // Internal redirect endpoints shouldn't surface in search.
-      filter: (page) => !page.includes('/index.php/'),
+      // Drop internal redirect endpoints + Drupal listing query-string artifacts.
+      filter: (page) => !page.includes('/index.php/') && !/[?&=]|%3F/i.test(page),
       serialize(item) {
         const u = new URL(item.url);
         const p = u.pathname.replace(/\/$/, '');

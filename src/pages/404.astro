@@ -1,0 +1,17 @@
+---
+import Site from '~/layouts/Site.astro';
+import { bp } from '~/lib/with-base';
+---
+<Site title="Page not found" description="The page you requested could not be found.">
+  <div class="page" style="max-width:var(--max);margin:0 auto;padding:2rem var(--gap);">
+    <article class="content" style="text-align:center;">
+      <h1 style="font-size:2.5rem;margin-bottom:0.5rem;">404</h1>
+      <p style="font-size:1.1rem;color:var(--c-muted);">We couldn't find that page.</p>
+      <p style="margin-top:1.5rem;">
+        <a href={bp('/')}>Home</a>
+        &nbsp;·&nbsp;
+        <a href={bp('/sitemap')}>Browse all pages</a>
+      </p>
+    </article>
+  </div>
+</Site>

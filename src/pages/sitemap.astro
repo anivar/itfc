@@ -111,22 +111,28 @@ const present = letters.filter((l) => (grouped.get(l)?.length ?? 0) > 0);
       if (!q) return;
       const sections = Array.from(document.querySelectorAll('.sitemap-section'));
       const items = Array.from(document.querySelectorAll('.sitemap-list li'));
+      const apply = (raw) => {
+        const term = (raw || '').trim().toLowerCase();
+        for (const li of items) {
+          const a = li.querySelector('a');
+          const t = a && a.dataset.title ? a.dataset.title : '';
+          li.classList.toggle('is-hidden', term && !t.includes(term));
+        }
+        for (const s of sections) {
+          const visible = s.querySelectorAll('.sitemap-list li:not(.is-hidden)').length;
+          s.classList.toggle('is-empty', visible === 0);
+        }
+      };
       let raf = 0;
       q.addEventListener('input', () => {
         cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          const term = q.value.trim().toLowerCase();
-          for (const li of items) {
-            const a = li.querySelector('a');
-            const t = a && a.dataset.title ? a.dataset.title : '';
-            li.classList.toggle('is-hidden', term && !t.includes(term));
-          }
-          for (const s of sections) {
-            const visible = s.querySelectorAll('.sitemap-list li:not(.is-hidden)').length;
-            s.classList.toggle('is-empty', visible === 0);
-          }
-        });
+        raf = requestAnimationFrame(() => apply(q.value));
       });
+      const initial = new URLSearchParams(location.search).get('q');
+      if (initial) {
+        q.value = initial;
+        apply(initial);
+      }
     })();
   </script>
 </Site>
