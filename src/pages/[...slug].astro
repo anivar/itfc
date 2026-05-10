@@ -20,8 +20,17 @@ export async function getStaticPaths() {
     s.includes('?') ||
     s.includes('=') ||
     s.startsWith('index.php/');
+  // Empty taxonomy/term/N stubs: Drupal generated thousands of these
+  // category index pages; many were captured by Wayback as title-only HTML
+  // (no body). They render as blank pages and bloat the sitemap. Drop the
+  // empty ones; substantive taxonomy pages with real body content stay.
+  const wordCount = (html: string) =>
+    (html.replace(/<[^>]+>/g, ' ').match(/\w+/g) || []).length;
+  const isEmptyShell = (p: Page) =>
+    (p.slug.startsWith('taxonomy/term/') || p.slug.startsWith('node/')) &&
+    wordCount(p.body_html || '') < 30;
   return all
-    .filter((p) => !isJunk(p.slug))
+    .filter((p) => !isJunk(p.slug) && !isEmptyShell(p))
     .map((p) => ({
       params: { slug: p.slug },
       props: { page: p },
