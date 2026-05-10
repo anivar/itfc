@@ -21,7 +21,8 @@ export async function getStaticPaths() {
     s.startsWith('user/') ||
     s.includes('?') ||
     s.includes('=') ||
-    s.startsWith('index.php/');
+    s.startsWith('index.php/') ||
+    s.includes('/Special:');
   // Empty taxonomy/term/N stubs: Drupal generated thousands of these
   // category index pages; many were captured by Wayback as title-only HTML
   // (no body). They render as blank pages and bloat the sitemap. Drop the
