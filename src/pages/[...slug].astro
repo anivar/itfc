@@ -29,8 +29,13 @@ export async function getStaticPaths() {
   const isEmptyShell = (p: Page) =>
     (p.slug.startsWith('taxonomy/term/') || p.slug.startsWith('node/')) &&
     wordCount(p.body_html || '') < 30;
+  // Wayback captured ~30 inclusionroundtable2014/* URLs as the legacy CMS's
+  // "Fatal Error." page (engine 500'd at capture time). They have no real
+  // content, just an error template. Drop them.
+  const isErrorCapture = (p: Page) =>
+    (p.title || '').trim().toLowerCase().startsWith('fatal error');
   return all
-    .filter((p) => !isJunk(p.slug) && !isEmptyShell(p))
+    .filter((p) => !isJunk(p.slug) && !isEmptyShell(p) && !isErrorCapture(p))
     .map((p) => ({
       params: { slug: p.slug },
       props: { page: p },
