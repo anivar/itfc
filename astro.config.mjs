@@ -42,7 +42,11 @@ export default defineConfig({
       filter: (page) => !page.includes('/index.php/') && !/[?&=]|%3F/i.test(page),
       serialize(item) {
         const u = new URL(item.url);
-        const p = u.pathname.replace(/\/$/, '');
+        // BASE may be `/itfc/` on GH Pages or `/` on a custom domain;
+        // strip the prefix before matching so the home + section bumps
+        // apply on both deploys.
+        const base = (BASE.endsWith('/') ? BASE : `${BASE}/`).replace(/\/+$/, '');
+        const p = u.pathname.replace(new RegExp(`^${base}`), '').replace(/\/$/, '');
         if (p === '') item.priority = 1.0;
         else if (
           ['/aboutus', '/focus-areas', '/research', '/resources_all', '/sitemap'].includes(p)
