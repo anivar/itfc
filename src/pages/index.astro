@@ -14,7 +14,7 @@ const all = pages as Page[];
 const home = all.find((p) => p.slug === 'index');
 const homeHtml = home ? withBase(home.body_html) : '';
 ---
-<Site title={SITE.name} description={SITE.tagline}>
+<Site title={SITE.name} description={SITE.tagline} bodyClass="page-title--Home path-frontpage">
   <div role="main" class="main-container container js-quickedit-main-content">
     {home ? (
       <div class="row">

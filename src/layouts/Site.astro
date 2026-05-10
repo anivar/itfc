@@ -12,8 +12,9 @@ interface Props {
   canonicalPath?: string;
   ogImage?: string;
   article?: boolean;
+  bodyClass?: string;
 }
-const { title, description, canonicalPath, ogImage = '/brand/itfc-logo.png', article = false } = Astro.props;
+const { title, description, canonicalPath, ogImage = '/brand/itfc-logo.png', article = false, bodyClass = '' } = Astro.props;
 const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
 const siteOrigin = Astro.site ?? new URL(`https://${SITE.domain}/`);
 const canonical = canonicalPath
@@ -54,7 +55,7 @@ const ogImageAbs = ogImage.startsWith('http')
       }}
     />
   </head>
-  <body>
+  <body class={`has-glyphicons ${bodyClass}`.trim()}>
     <a href="#main" class="skip-link">Skip to content</a>
     <Header />
     <main id="main">

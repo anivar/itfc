@@ -35,8 +35,14 @@ const description = (html || '')
   .replace(/\s+/g, ' ')
   .trim()
   .slice(0, 200);
+
+// Mirror Drupal body classes so brand CSS rules like
+// `.page-title--Research`, `.path-aboutus` apply on legacy pages.
+const titleSlug = (page.title || page.slug).replace(/\s+/g, '_');
+const pathSlug = page.slug.replace(/\//g, '-');
+const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
 ---
-<Site title={page.title} description={description} canonicalPath={`/${page.slug}`}>
+<Site title={page.title} description={description} canonicalPath={`/${page.slug}`} bodyClass={bodyClass}>
   <div class="page">
     <article class="content">
       <h1>{page.title}</h1>

@@ -198,7 +198,19 @@
   .region-navigation-collapsible .navbar-nav { display: block !important; }
   .navbar-nav .dropdown-menu { display: none; }
   .navbar-nav .dropdown.open > .dropdown-menu { display: block; }
+  /* Brand CSS floats nav items right which reverses visual order against
+     DOM. Float left so [About → Donate] reads in source order. */
+  .navbar-nav > li { float: left !important; }
 }
+
+/* ─── Drupal Views grid shims ─────────────────────────────────────────────
+ * Brand CSS sets `.view-frontpage-focus-areas .views-row { width: 22% }`
+ * but never floats them, so the four tiles stack instead of forming a row.
+ * Original Drupal Bootstrap views-grid plugin handled this; we substitute
+ * a float so the tiles flow horizontally inside the parent which already
+ * has `overflow: auto` to clear them. */
+.view-frontpage-focus-areas .view-content { display: flex; flex-wrap: wrap; }
+.view-frontpage-focus-areas .views-row { float: left; }
 
 /* Small Astro attribution line in the original Drupal footer region. */
 .footer__credit {
