@@ -389,3 +389,17 @@ button.site-nav__top {
   opacity: 0.75;
 }
 .footer__credit a { text-decoration: underline; }
+
+/* ─── Brand-CSS overrides ─────────────────────────────────────────────────
+ * The captured itfc_style_v5.css ships `.navbar-nav { display: none }` at
+ * desktop widths (≥768px). The live Drupal site presumably re-enables it
+ * via a theme override we don't have. Force the desktop menu visible.
+ */
+@media (min-width: 768px) {
+  .navbar-default .navbar-nav,
+  .region-navigation-collapsible .navbar-nav { display: block !important; }
+  /* Brand CSS positions the menu absolute at top:113px right:0 width:58%;
+     keep that intent but don't let the dropdown menus inherit display rules. */
+  .navbar-nav .dropdown-menu { display: none; }
+  .navbar-nav .dropdown.open > .dropdown-menu { display: block; }
+}
