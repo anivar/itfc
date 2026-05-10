@@ -183,10 +183,16 @@
 .views_slideshow_pager_field_item.is-active { background: var(--color-editorial); }
 
 /* ─── Brand-CSS shims ─────────────────────────────────────────────────────
- * The captured itfc_style_v5.css ships `.navbar-nav { display: none }` at
- * desktop widths (≥768px). The live Drupal site presumably re-enables it
- * via a theme override we don't have. Force the desktop menu visible.
+ * Two layered bugs hide the desktop menu without these overrides:
+ *  1. Bootstrap 3.3.7 declares `.collapse { visibility: collapse }`. That
+ *     property inherits, so every descendant of `<div class="navbar-collapse
+ *     collapse">` — including `.navbar-nav` — vanishes regardless of its
+ *     own `display`. The `.navbar-collapse.collapse { display:block!important }`
+ *     rule that BS3 adds at ≥768px restores the box but not visibility.
+ *  2. The captured itfc_style_v5.css ships `.navbar-nav { display: none }`
+ *     at ≥768px (the live Drupal theme apparently overrode this elsewhere).
  */
+.navbar-collapse.collapse { visibility: visible; }
 @media (min-width: 768px) {
   .navbar-default .navbar-nav,
   .region-navigation-collapsible .navbar-nav { display: block !important; }
