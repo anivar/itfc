@@ -9,6 +9,8 @@ scripts/_classified.json
 scripts/_classified_report.json
 scripts/_refetch.json
 scripts/_refetch_done.json
+scripts/_ingest_refreshed.json
+scripts/.gitignore
 
 # dependencies
 node_modules/
