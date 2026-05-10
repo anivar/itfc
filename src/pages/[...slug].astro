@@ -17,6 +17,8 @@ export async function getStaticPaths() {
   const isJunk = (s: string) =>
     !s ||
     s === 'index' ||
+    s === 'user/login' ||
+    s.startsWith('user/') ||
     s.includes('?') ||
     s.includes('=') ||
     s.startsWith('index.php/');
