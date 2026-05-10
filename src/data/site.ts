@@ -14,7 +14,6 @@ export const SITE = {
   social: {
     twitter: 'https://www.twitter.com/itforchange',
     youtube: 'https://www.youtube.com/user/CCIDMYSORE',
-    rss: '/rss.xml',
   },
   license: {
     name: 'Creative Commons Attribution-ShareAlike 4.0',

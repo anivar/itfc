@@ -3,6 +3,9 @@ dist/
 # generated types
 .astro/
 
+# scratch outputs from gap/audit scripts
+scripts/_gaps.json
+
 # dependencies
 node_modules/
 

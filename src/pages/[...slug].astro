@@ -11,8 +11,17 @@ type Page = {
 
 export async function getStaticPaths() {
   const all = pages as Page[];
+  // Drop junk slugs that came from URL-encoded query strings in the
+  // original Drupal capture (e.g. "RightToKnow?q=OurTeam") and old
+  // CMS entry points (index.php/*).
+  const isJunk = (s: string) =>
+    !s ||
+    s === 'index' ||
+    s.includes('?') ||
+    s.includes('=') ||
+    s.startsWith('index.php/');
   return all
-    .filter((p) => p.slug !== 'index')
+    .filter((p) => !isJunk(p.slug))
     .map((p) => ({
       params: { slug: p.slug },
       props: { page: p },
