@@ -1,48 +1,72 @@
 ---
+// Footer mirrors the 2026 Drupal footer markup so the brand stylesheet
+// (`/themes/itfc_agov_subtheme/css/itfc_style_v2.css`) styles it the
+// same as the original — `social__wrapper` + `social--<network>` pills.
 import { FOOTER_LINKS, SITE } from '~/data/site';
 import { bp } from '~/lib/with-base';
-
-const year = new Date().getFullYear();
 ---
-<footer class="site-footer">
-  <div class="site-footer__inner">
-    <div>
-      <h4>Contact</h4>
-      <p style="font-size:0.92rem;line-height:1.55;">{SITE.address}</p>
-      <p style="font-size:0.92rem;">
-        <a href={SITE.mapsUrl}>Directions on map.</a><br />
-        Tel: {SITE.phone}<br />
-        Email: {SITE.email}
-      </p>
-    </div>
-    <div>
-      <h4>Stay Up to Date</h4>
-      <ul style="list-style:none;padding:0;margin:0;line-height:1.9;font-size:0.92rem;">
-        <li><a href={SITE.social.twitter}>Follow us on Twitter</a></li>
-        <li><a href={SITE.social.youtube}>Watch on YouTube</a></li>
-        <li><a href={bp('/contact-Us')}>Contact us</a></li>
-      </ul>
-    </div>
-    <div>
-      <h4>License</h4>
-      <p style="font-size:0.85rem;line-height:1.55;">
-        All content (except where explicitly stated) is licensed under a
-        <a href={SITE.license.url}>{SITE.license.name}</a> International
-        License for widescale, free reproduction and translation.
-      </p>
-    </div>
-    <div>
-      <h4>Quick Links</h4>
-      <ul style="list-style:none;padding:0;margin:0;line-height:1.9;font-size:0.92rem;">
+<footer class="footer container" role="contentinfo">
+  <div class="region region-footer">
+    <section class="block block-block-content clearfix">
+      <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
+        <p>{SITE.address}.</p>
+        <p>
+          <a href={SITE.mapsUrl} rel="noopener">Directions on map.</a>
+          {' '}Tel: {SITE.phone}. Email:
+          {' '}<a href={SITE.emailHref}>{SITE.email}</a>
+        </p>
+      </div>
+    </section>
+
+    <section class="block block-block-content clearfix">
+      <div class="social__wrapper field field--name-field-social-icon field--type-link field--label-visually_hidden">
+        <div class="field--label sr-only">Social Icon</div>
+        <div class="field__items">
+          <div class="social__item field--item">
+            <a href={SITE.social.twitter} target="_blank" rel="noopener" class="social--twitter">Follow us on Twitter</a>
+          </div>
+          <div class="social__item field--item">
+            <a href={SITE.social.facebook} target="_blank" rel="noopener" class="social--facebook">Facebook</a>
+          </div>
+          <div class="social__item field--item">
+            <a href={SITE.social.youtube} target="_blank" rel="noopener" class="social--youtube">Watch</a>
+          </div>
+          <div class="social__item field--item">
+            <a href={SITE.emailHref} class="social--contact">Contact us</a>
+          </div>
+          <div class="social__item field--item">
+            <a href={SITE.social.instagram} target="_blank" rel="noopener" class="social--instagram">Instagram</a>
+          </div>
+          <div class="social__item field--item">
+            <a href={SITE.social.newsletter} target="_blank" rel="noopener" class="social--newsletter">Newsletter</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="block block-block-content clearfix">
+      <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
+        <p>
+          All content (except where explicitly stated) is licensed under a
+          {' '}<a href={SITE.license.url} rel="license noopener">{SITE.license.name}</a>
+        </p>
+        <p>
+          International License for widescale, free reproduction and translation.
+        </p>
+      </div>
+    </section>
+
+    <nav role="navigation" aria-label="Footer Quick Links">
+      <h2 class="visually-hidden">Footer Quick Links</h2>
+      <ul class="menu nav">
         {FOOTER_LINKS.map((link) => (
           <li><a href={bp(link.href)}>{link.label}</a></li>
         ))}
       </ul>
-    </div>
-  </div>
-  <div class="site-footer__rule">
-    © {year} {SITE.name} · Built with Astro by
-    <a href="https://anivar.net" rel="author noopener noreferrer">anivar</a>
-    · Hosted on GitHub Pages.
+    </nav>
+
+    <p class="footer__credit">
+      Astro by <a href="https://anivar.net" rel="noopener" target="_blank">anivar.net</a>
+    </p>
   </div>
 </footer>

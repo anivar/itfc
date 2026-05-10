@@ -5,15 +5,20 @@ export const SITE = {
   shortName: 'ITfC',
   tagline: 'Bridging Development Realities and Technological Possibilities',
   domain: 'itforchange.net',
+  // Address + contact match the 2026 footer block.
   address:
-    "# 393, 17th Main Road, 35th Cross, Jayanagar 4th 'T' Block, Bangalore, Karnataka - 560041",
-  phone: '+91 80 2665 4134 / 2653 6890',
+    "# 1371, First Floor, 31st \"B\" Cross, Jayanagar 4th \"T\" Block, Bangalore, Karnataka - 560041",
+  phone: '+91 80 2665 4134',
   mapsUrl:
-    'https://www.google.co.in/maps/dir//IT+for+Change,+393,+17th+Main+Road,+35th+Cross+Road,+4th+Block,+Jayanagar,+Bengaluru,+Karnataka+560041',
+    'https://www.google.com/maps/dir//1371,+31st+B+Cross+Rd,+4th+T+Block+East,+Tilak+Nagar,+Jayanagar,+Bengaluru,+Karnataka+560011',
   email: 'ITfC(at)ITforChange(dot)net',
+  emailHref: 'mailto:ITfC@itforchange.net?subject=Hello',
   social: {
     twitter: 'https://www.twitter.com/itforchange',
-    youtube: 'https://www.youtube.com/user/CCIDMYSORE',
+    facebook: 'https://www.facebook.com/itforchangeindia/',
+    youtube: 'https://www.youtube.com/channel/UCQIHbWMOrI0Hg5pSxjoKGlA',
+    instagram: 'https://www.instagram.com/itforchange/',
+    newsletter: 'https://eepurl.com/cm1zTr',
   },
   license: {
     name: 'Creative Commons Attribution-ShareAlike 4.0',
@@ -71,6 +76,7 @@ export const NAV: NavItem[] = [
     ],
   },
   { label: 'Prakriye', href: 'https://itforchange.net/namma-maathu/', external: true },
+  { label: 'Donate', href: '/donate' },
 ];
 
 // Footer "quick links" block from the original.

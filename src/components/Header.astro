@@ -43,7 +43,9 @@ import { bp } from '~/lib/with-base';
     </button>
   </div>
   <div id="navbar-collapse" class="navbar-collapse collapse">
-    <nav role="navigation" aria-label="Main">
+    <div class="region region-navigation-collapsible">
+    <nav role="navigation" aria-labelledby="block-mainnavigation-menu" aria-label="Main navigation">
+      <h2 class="sr-only" id="block-mainnavigation-menu">Main navigation</h2>
       <ul class="menu nav navbar-nav">
         {NAV.map((item) =>
           item.children ? (
@@ -73,6 +75,7 @@ import { bp } from '~/lib/with-base';
         )}
       </ul>
     </nav>
+    </div>
   </div>
 </header>
 <script is:inline>
