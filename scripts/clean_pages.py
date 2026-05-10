@@ -57,6 +57,11 @@ NODE_HREF_RE = re.compile(r'href="/?node/(\d+)([#?][^"]*)?"', re.I)
 
 def fix_title(title: str) -> tuple[str, bool]:
     nt = TITLE_SUFFIX_RE.sub('', title).strip()
+    # Some legacy Joomla pages serialised the <title> twice ("about
+    # usabout us"). Collapse exact halve-and-repeat duplicates.
+    half = len(nt) // 2
+    if half >= 4 and nt[:half].strip() == nt[half:].strip():
+        nt = nt[:half].strip()
     return (nt, nt != title) if nt else (title, False)
 
 

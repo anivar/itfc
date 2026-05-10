@@ -156,6 +156,13 @@
   text-decoration: none;
   font-size: 0.95rem;
 }
+button.site-nav__top {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  text-align: left;
+}
 .site-nav a:hover, .site-nav__top:hover {
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
@@ -175,7 +182,21 @@
   z-index: 10;
 }
 .site-nav__group:hover .site-nav__menu,
-.site-nav__group:focus-within .site-nav__menu { display: block; }
+.site-nav__group:focus-within .site-nav__menu,
+.site-nav__group[data-open='true'] .site-nav__menu { display: block; }
+.site-nav__top { user-select: none; }
+@media (max-width: 700px) {
+  .site-nav__inner { flex-direction: column; align-items: stretch; }
+  .site-nav__group, .site-nav__inner > a { width: 100%; }
+  .site-nav__menu {
+    position: static;
+    box-shadow: none;
+    border: 0;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .site-nav__menu a { color: #fff; }
+  .site-nav__menu a:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+}
 .site-nav__menu a {
   display: block;
   color: var(--color-ink);
@@ -219,6 +240,14 @@
   padding: 0.4rem 0.6rem;
   text-align: left;
 }
+/* Wide tables in legacy body_html overflow narrow viewports — give them
+   a horizontal scroll container without altering table layout. */
+.content table { display: block; overflow-x: auto; max-width: 100%; }
+@media (min-width: 700px) { .content table { display: table; } }
+.content img { height: auto; max-width: 100%; }
+/* Drupal/legacy markup occasionally nests anchors. Reset color so the
+   inner text is still legible when both wrappers apply link styling. */
+.content a a { color: inherit; }
 .content blockquote {
   border-left: 3px solid #ccc;
   margin: 1em 0;
@@ -248,6 +277,15 @@
 }
 .aside ul { list-style: none; padding: 0; margin: 0; }
 .aside li { margin: 0.25rem 0; }
+
+/* ─── Drupal Views slideshow without JS ──────────────────────────────────
+ * The captured Drupal markup ships every slide and relies on Drupal's
+ * cycle JS to rotate them. We don't ship that JS, so 6 hero banners
+ * stack vertically. Honour the `…cycle_hidden` class so only the lead
+ * slide renders. */
+.views_slideshow_cycle_hidden { display: none !important; }
+.views_slideshow_cycle_main img,
+.view-slideshow img { width: 100%; height: auto; }
 
 .tag-pill {
   background: var(--color-tag);

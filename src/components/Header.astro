@@ -19,8 +19,8 @@ import { bp } from '~/lib/with-base';
   <div class="site-nav__inner">
     {NAV.map((item) => (
       item.children ? (
-        <div class="site-nav__group">
-          <span class="site-nav__top" tabindex="0">{item.label} ▾</span>
+        <div class="site-nav__group" data-open="false">
+          <button type="button" class="site-nav__top" aria-haspopup="true" aria-expanded="false">{item.label} ▾</button>
           <div class="site-nav__menu" role="menu">
             {item.children.map((child) => (
               <a href={bp(child.href)}>{child.label}</a>
@@ -33,3 +33,31 @@ import { bp } from '~/lib/with-base';
     ))}
   </div>
 </nav>
+<script is:inline>
+  // Click-to-toggle dropdowns so touch users (no :hover) can navigate.
+  document.addEventListener('click', (e) => {
+    const top = e.target.closest('.site-nav__top');
+    if (top) {
+      const group = top.parentElement;
+      const open = group.dataset.open === 'true';
+      document.querySelectorAll('.site-nav__group[data-open="true"]')
+        .forEach((g) => {
+          g.dataset.open = 'false';
+          g.querySelector('.site-nav__top')?.setAttribute('aria-expanded', 'false');
+        });
+      if (!open) {
+        group.dataset.open = 'true';
+        top.setAttribute('aria-expanded', 'true');
+      }
+      e.preventDefault();
+      return;
+    }
+    if (!e.target.closest('.site-nav__group')) {
+      document.querySelectorAll('.site-nav__group[data-open="true"]')
+        .forEach((g) => {
+          g.dataset.open = 'false';
+          g.querySelector('.site-nav__top')?.setAttribute('aria-expanded', 'false');
+        });
+    }
+  });
+</script>
