@@ -25,33 +25,39 @@ export type NavItem = {
   label: string;
   href: string;
   children?: NavItem[];
+  external?: boolean;
 };
 
-// Primary navigation.
+// Primary navigation — mirrors the 2026 Drupal main menu (see
+// https://web.archive.org/web/20260424201529/itforchange.net).
 export const NAV: NavItem[] = [
-  { label: 'Home', href: '/' },
   {
     label: 'About Us',
     href: '/aboutus',
     children: [
       { label: 'Overview', href: '/aboutus' },
       { label: 'Governing board', href: '/gov-board' },
+      { label: 'Leadership', href: '/leadership' },
       { label: 'Team', href: '/team' },
       { label: 'Annual reports', href: '/RightToKnow' },
+      { label: 'Policies', href: '/policies' },
       { label: 'Contact us', href: '/contact-Us' },
       { label: 'Join us', href: '/Joinus' },
+      { label: 'Intern With Us', href: '/intern-with-us' },
+      { label: 'Tenders', href: '/tenders' },
     ],
   },
   {
     label: 'Focus Areas',
     href: '/focus-areas',
     children: [
-      { label: 'Internet Governance', href: '/internet-governance' },
-      { label: 'Gender', href: '/gender' },
-      { label: 'Education', href: '/education' },
       { label: 'Development & Democracy', href: '/development-and-democracy' },
+      { label: 'Internet Governance', href: '/internet-governance' },
+      { label: 'Education', href: '/education' },
+      { label: 'Gender', href: '/gender' },
     ],
   },
+  { label: 'Publications', href: '/resources_all' },
   {
     label: 'What We Do',
     href: '/what-we-do',
@@ -64,8 +70,7 @@ export const NAV: NavItem[] = [
       { label: 'Events', href: '/events' },
     ],
   },
-  { label: 'Publications', href: '/resources_all' },
-  { label: 'Donate', href: '/donate' },
+  { label: 'Prakriye', href: 'https://itforchange.net/namma-maathu/', external: true },
 ];
 
 // Footer "quick links" block from the original.

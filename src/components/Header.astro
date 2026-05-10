@@ -1,63 +1,115 @@
 ---
+// Header that mirrors the original Drupal Bootstrap navbar from
+// https://web.archive.org/web/20260424201529/itforchange.net
 import { NAV, SITE } from '~/data/site';
 import { bp } from '~/lib/with-base';
 ---
-<header class="site-header">
-  <div class="site-header__inner">
-    <a href={bp('/')} class="brand" rel="home" title="Home">
-      <img src={bp('/brand/itfc-logo.png')} alt={SITE.name} class="brand__logo" />
-      <span class="brand__tag">{SITE.tagline}</span>
-    </a>
-    <form action={bp('/sitemap')} method="get" class="site-search" role="search">
-      <label for="q" class="skip-link">Search</label>
-      <input id="q" type="search" name="q" placeholder="Search pages…" />
-      <button type="submit">Search</button>
-    </form>
+<header class="navbar navbar-default container" id="navbar" role="banner">
+  <div class="navbar-header">
+    <div class="region region-navigation">
+      <a class="logo navbar-btn pull-left" href={bp('/')} title="Home" rel="home">
+        <img src={bp('/sites/default/files/high-res-itfc-logo1_4.png')} alt={SITE.name} />
+      </a>
+      <p class="navbar-text">{SITE.tagline}</p>
+      <div class="search-block-form block block-search" role="search">
+        <form action={bp('/sitemap')} method="get">
+          <div class="form-item form-type-search form-no-label form-group">
+            <label for="edit-keys" class="control-label sr-only">Search</label>
+            <div class="input-group">
+              <input
+                id="edit-keys"
+                class="form-search form-control"
+                type="search"
+                name="q"
+                placeholder="Search"
+                size="15"
+              />
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-primary icon-only" aria-label="Search">
+                  <span class="icon glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <button type="button" class="navbar-toggle collapsed" aria-controls="navbar-collapse"
+            aria-expanded="false" data-target="#navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+  </div>
+  <div id="navbar-collapse" class="navbar-collapse collapse">
+    <nav role="navigation" aria-label="Main">
+      <ul class="menu nav navbar-nav">
+        {NAV.map((item) =>
+          item.children ? (
+            <li class="expanded dropdown">
+              <a
+                href={bp(item.href)}
+                class="dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >{item.label} <span class="caret"></span></a>
+              <ul class="menu dropdown-menu">
+                {item.children.map((child) => (
+                  <li><a href={bp(child.href)}>{child.label}</a></li>
+                ))}
+              </ul>
+            </li>
+          ) : (
+            <li>
+              {item.external ? (
+                <a href={item.href} target="_self" rel="noopener">{item.label}</a>
+              ) : (
+                <a href={bp(item.href)}>{item.label}</a>
+              )}
+            </li>
+          )
+        )}
+      </ul>
+    </nav>
   </div>
 </header>
-<nav class="site-nav" role="navigation" aria-label="Main">
-  <div class="site-nav__inner">
-    {NAV.map((item) => (
-      item.children ? (
-        <div class="site-nav__group" data-open="false">
-          <button type="button" class="site-nav__top" aria-haspopup="true" aria-expanded="false">{item.label} ▾</button>
-          <div class="site-nav__menu" role="menu">
-            {item.children.map((child) => (
-              <a href={bp(child.href)}>{child.label}</a>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <a href={bp(item.href)}>{item.label}</a>
-      )
-    ))}
-  </div>
-</nav>
 <script is:inline>
-  // Click-to-toggle dropdowns so touch users (no :hover) can navigate.
-  document.addEventListener('click', (e) => {
-    const top = e.target.closest('.site-nav__top');
-    if (top) {
-      const group = top.parentElement;
-      const open = group.dataset.open === 'true';
-      document.querySelectorAll('.site-nav__group[data-open="true"]')
-        .forEach((g) => {
-          g.dataset.open = 'false';
-          g.querySelector('.site-nav__top')?.setAttribute('aria-expanded', 'false');
-        });
-      if (!open) {
-        group.dataset.open = 'true';
-        top.setAttribute('aria-expanded', 'true');
+  // Vanilla JS replacements for Bootstrap 3 navbar collapse + dropdowns
+  // (we don't ship jQuery + bootstrap.js, so we wire the two interactions
+  // we actually use: mobile collapse toggle and dropdown click-toggle).
+  (function () {
+    var toggle = document.querySelector('.navbar-toggle');
+    var collapse = document.getElementById('navbar-collapse');
+    if (toggle && collapse) {
+      toggle.addEventListener('click', function () {
+        var open = collapse.classList.toggle('in');
+        toggle.classList.toggle('collapsed', !open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    }
+    function closeAll(except) {
+      document.querySelectorAll('li.dropdown.open').forEach(function (li) {
+        if (li !== except) {
+          li.classList.remove('open');
+          var t = li.querySelector('.dropdown-toggle');
+          if (t) t.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+    document.addEventListener('click', function (e) {
+      var t = e.target.closest('.dropdown-toggle');
+      if (t) {
+        e.preventDefault();
+        var li = t.parentElement;
+        var willOpen = !li.classList.contains('open');
+        closeAll(willOpen ? li : null);
+        li.classList.toggle('open', willOpen);
+        t.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        return;
       }
-      e.preventDefault();
-      return;
-    }
-    if (!e.target.closest('.site-nav__group')) {
-      document.querySelectorAll('.site-nav__group[data-open="true"]')
-        .forEach((g) => {
-          g.dataset.open = 'false';
-          g.querySelector('.site-nav__top')?.setAttribute('aria-expanded', 'false');
-        });
-    }
-  });
+      if (!e.target.closest('li.dropdown')) closeAll(null);
+    });
+  })();
 </script>

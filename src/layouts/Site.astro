@@ -74,7 +74,9 @@ const ogImageAbs = ogImage.startsWith('http')
             '.views_slideshow_cycle_slide, .views_slideshow_slide'
           );
           if (slides.length < 2) return;
-          // Strip Drupal's "hidden" class — JS now controls visibility.
+          // Switch the block into JS-active fade mode and strip Drupal's
+          // pre-hydration "hidden" flag from the non-leading slides.
+          block.classList.add('js-cycle');
           slides.forEach(function (s) {
             s.classList.remove('views_slideshow_cycle_hidden');
           });

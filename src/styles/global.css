@@ -280,44 +280,56 @@ button.site-nav__top {
 
 /* ─── Drupal Views slideshow (cycling) ───────────────────────────────────
  * Original Drupal ships the markup + cycle JS; we re-implement the
- * fade-cycle in ~30 lines of vanilla JS (see Site.astro). Slides stack
- * via absolute positioning; the active slide gets `.is-active`.
+ * fade-cycle in ~30 lines of vanilla JS (see Site.astro).
  *
- * No-JS / pre-hydration fallback: only the first slide renders (the
- * Drupal markup already marks 5 of 6 with `views_slideshow_cycle_hidden`),
- * so the page never shows a stack of overlapping cards. */
-.views_slideshow_cycle_main,
-.views_slideshow_main {
+ * Two modes:
+ *   - Pre-hydration / no-JS: slides render block-stacked (with `.cycle_hidden`
+ *     suppressing all but the first slide so we don't show a tall stack).
+ *   - JS-active (parent gets `.js-cycle`): slides switch to absolute-positioned
+ *     fade transitions, controlled by `.is-active` on the current slide.
+ */
+
+/* Captured Drupal homepage uses bs-region columns floated via Bootstrap.
+ * The full-width rows (top, middle, bottom) need to clear the floats from
+ * the preceding three-column band, otherwise the layout collapses and
+ * everything below FOCUS AREAS overlaps. */
+.bs-region--top,
+.bs-region--middle,
+.bs-region--bottom { clear: both; }
+.bs-region { padding: 0 0.5rem; }
+
+/* No-JS: only the first slide is visible (rest are flagged hidden by Drupal). */
+.views_slideshow_cycle_hidden { display: none; }
+.views_slideshow_cycle_main img,
+.views_slideshow_slide img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* JS-active mode: fade between absolute-positioned slides. */
+.js-cycle.views_slideshow_cycle_main,
+.js-cycle.views_slideshow_main {
   position: relative;
   margin: 0 0 1.5rem;
   min-height: 220px;
 }
-.views_slideshow_cycle_teaser_section { position: relative; }
-.views_slideshow_cycle_slide,
-.views_slideshow_slide {
+.js-cycle .views_slideshow_cycle_teaser_section { position: relative; }
+.js-cycle .views_slideshow_cycle_slide,
+.js-cycle .views_slideshow_slide {
+  display: block;
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 700ms ease;
   pointer-events: none;
 }
-.views_slideshow_cycle_slide:first-child,
-.views_slideshow_slide:first-child {
-  position: relative;       /* first slide drives container height */
-  opacity: 1;
-  pointer-events: auto;
-}
-.views_slideshow_cycle_slide.is-active,
-.views_slideshow_slide.is-active {
+.js-cycle .views_slideshow_cycle_slide.is-active,
+.js-cycle .views_slideshow_slide.is-active {
   opacity: 1;
   pointer-events: auto;
   z-index: 1;
 }
-.views_slideshow_cycle_main img,
-.views_slideshow_slide img {
-  max-width: 100%;
-  height: auto;
-}
+
 .views_slideshow_pager_fields { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem; }
 .views_slideshow_pager_field_item {
   width: 10px; height: 10px; border-radius: 50%;

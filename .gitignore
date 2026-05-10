@@ -43,3 +43,4 @@ recovered_alt/
 reports/
 warc/
 recovery/
+scripts/__pycache__/
