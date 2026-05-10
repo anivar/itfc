@@ -45,7 +45,11 @@ const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
 <Site title={page.title} description={description} canonicalPath={`/${page.slug}`} bodyClass={bodyClass}>
   <div class="page">
     <article class="content">
-      <h1>{page.title}</h1>
+      {/* Brand v5 stylesheet styles `h1.page-header` as a blue-gray gradient
+          banner, but only for an explicit allow-list of body classes (about us,
+          team, governing body, policies, donate, ITfC Team, sitemap, etc.).
+          Other pages keep the plain h1 — which matches the live Drupal site. */}
+      <h1 class="page-header">{page.title}</h1>
       <div set:html={html}></div>
     </article>
   </div>
