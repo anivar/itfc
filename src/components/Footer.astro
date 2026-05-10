@@ -1,0 +1,49 @@
+---
+import { FOOTER_LINKS, SITE } from '~/data/site';
+import { bp } from '~/lib/with-base';
+
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div>
+      <h4>Contact</h4>
+      <p style="font-size:0.92rem;line-height:1.55;">{SITE.address}</p>
+      <p style="font-size:0.92rem;">
+        <a href={SITE.mapsUrl}>Directions on map.</a><br />
+        Tel: {SITE.phone}<br />
+        Email: {SITE.email}
+      </p>
+    </div>
+    <div>
+      <h4>Stay Up to Date</h4>
+      <ul style="list-style:none;padding:0;margin:0;line-height:1.9;font-size:0.92rem;">
+        <li><a href={SITE.social.twitter}>Follow us on Twitter</a></li>
+        <li><a href={bp(SITE.social.rss)}>Subscribe to RSS</a></li>
+        <li><a href={SITE.social.youtube}>Watch on YouTube</a></li>
+        <li><a href={bp('/contact-Us')}>Contact us</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>License</h4>
+      <p style="font-size:0.85rem;line-height:1.55;">
+        All content (except where explicitly stated) is licensed under a
+        <a href={SITE.license.url}>{SITE.license.name}</a> International
+        License for widescale, free reproduction and translation.
+      </p>
+    </div>
+    <div>
+      <h4>Quick Links</h4>
+      <ul style="list-style:none;padding:0;margin:0;line-height:1.9;font-size:0.92rem;">
+        {FOOTER_LINKS.map((link) => (
+          <li><a href={bp(link.href)}>{link.label}</a></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+  <div class="site-footer__rule">
+    © {year} {SITE.name} · Built with Astro by
+    <a href="https://anivar.net" rel="author noopener noreferrer">anivar</a>
+    · Hosted on GitHub Pages.
+  </div>
+</footer>

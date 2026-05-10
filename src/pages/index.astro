@@ -1,0 +1,35 @@
+---
+import pages from '~/data/pages.json';
+import { SITE } from '~/data/site';
+import Site from '~/layouts/Site.astro';
+import { withBase } from '~/lib/with-base';
+
+type Page = {
+  slug: string;
+  title: string;
+  body_html: string;
+};
+
+const all = pages as Page[];
+const home = all.find((p) => p.slug === 'index');
+const homeHtml = home ? withBase(home.body_html) : '';
+---
+<Site title={SITE.name} description={SITE.tagline}>
+  <div role="main" class="main-container container js-quickedit-main-content" style="max-width:var(--max);margin:0 auto;padding:0 var(--gap);">
+    {home ? (
+      <div class="row">
+        <section style="width:100%;">
+          <div class="region region-content" set:html={homeHtml}></div>
+        </section>
+      </div>
+    ) : (
+      <div class="page">
+        <article class="content">
+          <h1>{SITE.name}</h1>
+          <p style="font-size:1.05rem;color:var(--c-muted);">{SITE.tagline}</p>
+          <p><a href={`${import.meta.env.BASE_URL}sitemap`.replace(/\/+/g, '/')}>Browse the sitemap →</a></p>
+        </article>
+      </div>
+    )}
+  </div>
+</Site>

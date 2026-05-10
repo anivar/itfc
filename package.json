@@ -1,0 +1,36 @@
+{
+  "name": "itfc-astro",
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "packageManager": "bun@1.3.13",
+  "scripts": {
+    "import": "python3 scripts/import_cc_content.py",
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro check && astro build",
+    "build:gh": "SITE_URL=https://anivar.github.io BASE_PATH=/itfc/ bun run build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.9",
+    "@astrojs/rss": "^4.0.18",
+    "@astrojs/sitemap": "^3.7.2",
+    "@fontsource-variable/rubik": "^5.2.8",
+    "@fontsource/roboto": "^5.2.8",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.2.4",
+    "astro": "^6.3.1",
+    "astro-seo": "^1.1.0",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15"
+  }
+}

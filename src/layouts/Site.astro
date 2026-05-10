@@ -1,0 +1,66 @@
+---
+import { SEO } from 'astro-seo';
+import '~/styles/global.css';
+import Footer from '~/components/Footer.astro';
+import Header from '~/components/Header.astro';
+import { SITE } from '~/data/site';
+import { bp } from '~/lib/with-base';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  article?: boolean;
+}
+const { title, description, canonicalPath, ogImage = '/brand/itfc-logo.png', article = false } = Astro.props;
+const fullTitle = title ? `${title} | ${SITE.name}` : SITE.name;
+const siteOrigin = Astro.site ?? new URL(`https://${SITE.domain}/`);
+const canonical = canonicalPath
+  ? new URL(bp(canonicalPath), siteOrigin).toString()
+  : Astro.url.toString();
+const ogImageAbs = ogImage.startsWith('http')
+  ? ogImage
+  : new URL(bp(ogImage), siteOrigin).toString();
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#6b1f1f" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href={bp('/favicon.ico')} type="image/vnd.microsoft.icon" />
+    <link rel="alternate" type="application/rss+xml" title={`${SITE.name} — Updates`} href={bp('/rss.xml')} />
+    {/* Brand stylesheet loaded after global.css so brand specifics
+        (article fonts, view layouts, slideshow sizing) win where they exist. */}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+      media="all"
+    />
+    <link rel="stylesheet" href={bp('/themes/bootstrap/css/3.3.7/overrides.min.css')} media="all" />
+    <link rel="stylesheet" href={bp('/themes/itfc_agov_subtheme/css/itfc_style_v2.css')} media="all" />
+    <SEO
+      title={fullTitle}
+      description={description}
+      canonical={canonical}
+      openGraph={{
+        basic: {
+          title: fullTitle,
+          type: article ? 'article' : 'website',
+          image: ogImageAbs,
+        },
+        optional: { siteName: SITE.name, description },
+      }}
+    />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

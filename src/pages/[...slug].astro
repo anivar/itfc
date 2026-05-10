@@ -1,0 +1,37 @@
+---
+import pages from '~/data/pages.json';
+import Site from '~/layouts/Site.astro';
+import { withBase } from '~/lib/with-base';
+
+type Page = {
+  slug: string;
+  title: string;
+  body_html: string;
+};
+
+export async function getStaticPaths() {
+  const all = pages as Page[];
+  return all
+    .filter((p) => p.slug !== 'index')
+    .map((p) => ({
+      params: { slug: p.slug },
+      props: { page: p },
+    }));
+}
+
+const { page } = Astro.props as { page: Page };
+const html = withBase(page.body_html);
+const description = (html || '')
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, 200);
+---
+<Site title={page.title} description={description} canonicalPath={`/${page.slug}`}>
+  <div class="page">
+    <article class="content">
+      <h1>{page.title}</h1>
+      <div set:html={html}></div>
+    </article>
+  </div>
+</Site>

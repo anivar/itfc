@@ -1,0 +1,132 @@
+---
+import pages from '~/data/pages.json';
+import Site from '~/layouts/Site.astro';
+import { bp } from '~/lib/with-base';
+
+type Page = { slug: string; title: string };
+
+const all = (pages as Page[])
+  .filter((p) => p.slug && p.slug !== 'index')
+  .map((p) => ({ slug: p.slug, title: (p.title || p.slug).trim() }))
+  .sort((a, b) => a.title.localeCompare(b.title, 'en', { sensitivity: 'base' }));
+
+function bucket(title: string): string {
+  const c = title[0]?.toUpperCase() ?? '#';
+  if (c >= 'A' && c <= 'Z') return c;
+  return '#';
+}
+
+const letters = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')];
+const grouped = new Map<string, typeof all>();
+for (const l of letters) grouped.set(l, []);
+for (const p of all) grouped.get(bucket(p.title))!.push(p);
+const present = letters.filter((l) => (grouped.get(l)?.length ?? 0) > 0);
+---
+<Site title="Sitemap" description={`Index of ${all.length.toLocaleString()} pages.`} canonicalPath="/sitemap">
+  <div class="page">
+    <article class="content">
+      <h1>Sitemap</h1>
+      <p class="meta">{all.length.toLocaleString()} pages</p>
+
+      <nav aria-label="Jump to letter" class="sitemap-jump">
+        {present.map((l) => (
+          <a href={`#sec-${l === '#' ? 'num' : l}`}>{l}</a>
+        ))}
+      </nav>
+
+      <label class="sitemap-filter">
+        <span class="sr-only">Filter pages</span>
+        <input type="search" id="sitemap-q" placeholder="Filter pages…" autocomplete="off" />
+      </label>
+
+      <div id="sitemap-body">
+        {present.map((l) => (
+          <section id={`sec-${l === '#' ? 'num' : l}`} class="sitemap-section">
+            <h2>{l}</h2>
+            <ul class="sitemap-list">
+              {grouped.get(l)!.map((p) => (
+                <li><a href={bp(`/${p.slug}`)} data-title={p.title.toLowerCase()}>{p.title}</a></li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    </article>
+  </div>
+
+  <style>
+    .sitemap-jump {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin: 1rem 0 1.25rem;
+      padding: 0.5rem 0.6rem;
+      border: 1px solid var(--c-rule, #e2e2e2);
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    .sitemap-jump a {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 3px;
+    }
+    .sitemap-jump a:hover { background: #ececec; }
+    .sitemap-filter { display: block; margin: 0 0 1.5rem; }
+    .sitemap-filter input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      font-size: 1rem;
+      border: 1px solid var(--c-rule, #ccc);
+      border-radius: 4px;
+    }
+    .sitemap-section { margin: 1.5rem 0; scroll-margin-top: 5rem; }
+    .sitemap-section h2 {
+      font-size: 1.25rem;
+      margin: 0 0 0.5rem;
+      padding-bottom: 0.25rem;
+      border-bottom: 2px solid var(--c-editorial, #6b1f1f);
+    }
+    .sitemap-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      columns: 2;
+      column-gap: 2rem;
+    }
+    @media (min-width: 900px) { .sitemap-list { columns: 3; } }
+    .sitemap-list li { break-inside: avoid; padding: 0.15rem 0; }
+    .sitemap-list li.is-hidden { display: none; }
+    .sitemap-section.is-empty { display: none; }
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    }
+  </style>
+
+  <script is:inline>
+    (() => {
+      const q = document.getElementById('sitemap-q');
+      if (!q) return;
+      const sections = Array.from(document.querySelectorAll('.sitemap-section'));
+      const items = Array.from(document.querySelectorAll('.sitemap-list li'));
+      let raf = 0;
+      q.addEventListener('input', () => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          const term = q.value.trim().toLowerCase();
+          for (const li of items) {
+            const a = li.querySelector('a');
+            const t = a && a.dataset.title ? a.dataset.title : '';
+            li.classList.toggle('is-hidden', term && !t.includes(term));
+          }
+          for (const s of sections) {
+            const visible = s.querySelectorAll('.sitemap-list li:not(.is-hidden)').length;
+            s.classList.toggle('is-empty', visible === 0);
+          }
+        });
+      });
+    })();
+  </script>
+</Site>
