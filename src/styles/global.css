@@ -208,9 +208,37 @@
  * but never floats them, so the four tiles stack instead of forming a row.
  * Original Drupal Bootstrap views-grid plugin handled this; we substitute
  * a float so the tiles flow horizontally inside the parent which already
- * has `overflow: auto` to clear them. */
+ * has `overflow: auto` to clear them. The tiles also need `position:
+ * relative` because brand CSS positions the label and taxonomy fields
+ * absolutely — without an anchor they'd attach to the document. */
 .view-frontpage-focus-areas .view-content { display: flex; flex-wrap: wrap; }
-.view-frontpage-focus-areas .views-row { float: left; }
+.view-frontpage-focus-areas .views-row { float: left; position: relative; }
+
+/* IN THE MEDIA (first child) sits left as 8/12, FEATURED PROJECTS sits
+ * right as 4/12. LATEST EVENTS (third child) clears below. Brand CSS
+ * names rules for these layouts but only via `views-row.col-sm-6`
+ * markers our extracted body_html doesn't carry. Shim it positionally. */
+@media (min-width: 768px) {
+  .page-title--Home .col-sm-12.bs-region--bottom { overflow: hidden; }
+  .page-title--Home .bs-region--bottom > section:nth-child(1) {
+    float: left; width: 66%; padding-right: 30px;
+  }
+  .page-title--Home .bs-region--bottom > section:nth-child(2) {
+    float: right; width: 32%;
+  }
+  .page-title--Home .bs-region--bottom > section:nth-child(3) {
+    clear: both; width: 100%;
+  }
+}
+
+/* Footer: brand CSS resets .footer to width:100% margin:0 padding:62px 30px
+ * (gray full-bleed band). The inner `.region-footer` has `margin:0 auto`
+ * but no max-width, so its content sat at the left edge. Cap it to the
+ * site container width so the address + socials line up under the body. */
+.footer .region.region-footer {
+  max-width: var(--container-max);
+  margin: 0 auto;
+}
 
 /* Small Astro attribution line in the original Drupal footer region. */
 .footer__credit {
