@@ -4,7 +4,7 @@
 // Pattern lifted from anivar/rethink-aadhaar — env-driven SITE/BASE for GH
 // Pages, alias→canonical 302 redirects baked at build, sitemap integration.
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
@@ -17,13 +17,25 @@ const BASE = process.env.BASE_PATH ?? '/';
 // 302 (temporary) so the move to the official domain later doesn't get
 // cached too aggressively.
 const redirectsFile = fileURLToPath(new URL('./src/data/redirects.json', import.meta.url));
+const publicDir = fileURLToPath(new URL('./public', import.meta.url));
 /** @type {Record<string, { status: 302; destination: string }>} */
 let redirects = {};
 if (existsSync(redirectsFile)) {
   /** @type {Record<string, string>} */
   const raw = JSON.parse(readFileSync(redirectsFile, 'utf8'));
+  // Drop any FROM that resolves to a real static file in public/. Astro
+  // would otherwise try to mkdir <from>/index.html for the meta-refresh
+  // stub and ENOTDIR on the existing file (e.g. wayback PDFs under
+  // /sites/default/files/). Direct file serving is the right behavior anyway.
+  /** @param {string} from */
+  const collidesWithStatic = (from) => {
+    const rel = from.startsWith('/') ? from.slice(1) : from;
+    try { return statSync(`${publicDir}/${rel}`).isFile(); } catch { return false; }
+  };
   redirects = Object.fromEntries(
-    Object.entries(raw).map(([from, to]) => [from, { status: 302, destination: to }]),
+    Object.entries(raw)
+      .filter(([from]) => !collidesWithStatic(from))
+      .map(([from, to]) => [from, { status: 302, destination: to }]),
   );
 }
 
