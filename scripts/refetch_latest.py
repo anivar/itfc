@@ -124,17 +124,28 @@ class _Body(HTMLParser):
             self.buf.append(f'&#{name};')
 
 
+_SITE_SUFFIX_RE = re.compile(r'(\s*\|\s*IT for Change\s*)+$', re.IGNORECASE)
+
+
+def _clean_title(t: str | None) -> str | None:
+    """Strip trailing " | IT for Change" so Site.astro doesn't re-append it."""
+    if not t:
+        return t
+    return _SITE_SUFFIX_RE.sub('', t).strip() or None
+
+
 def extract_body_and_title(html_text: str) -> tuple[str, str | None]:
     p = _Body()
     p.feed(html_text)
+    title = _clean_title(p.title)
     for tag in ('div', 'main', 'article', 'table'):
         if tag in p.found:
             inner = p.found[tag]
             # Strip outer wrapper to keep only inner content
             inner = re.sub(rf'^<{tag}\b[^>]*>', '', inner)
             inner = re.sub(rf'</{tag}>$', '', inner)
-            return inner.strip(), p.title
-    return '', p.title
+            return inner.strip(), title
+    return '', title
 
 
 def normalize_internal(html_text: str) -> str:

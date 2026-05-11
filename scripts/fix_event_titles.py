@@ -1,17 +1,21 @@
 #!/usr/bin/env python3
-"""Repair degraded titles on event pages.
+"""Repair degraded page titles in `src/data/pages/*.json`.
 
-Two pathologies show up in `src/data/pages/*.json`:
+Three pathologies handled:
 
 1. Drupal-template doubled titles like:
        "Welcome to IT for Change wsis iiwsis ii"
    The page name was concatenated twice with no separator. We collapse the
    trailing duplicate.
 
-2. Joomla 1.5 captures whose <title> was just the site name
+2. Joomla 1.5 event captures whose <title> was just the site name
    ("Welcome to IT for Change") because Joomla rendered the real title
    inside the body, in <a class="contentpagetitle">…</a>. We promote that
    inner heading to the page title.
+
+3. Drupal "title | IT for Change" suffix that Site.astro re-appends, so the
+   rendered <title> ended up as "Foo | IT for Change | IT for Change" and
+   the H1 as "Foo | IT for Change". Strip the trailing site name.
 
 Idempotent: re-running is a no-op.
 
@@ -38,24 +42,23 @@ SITE_PREFIX = 'Welcome to IT for Change'
 
 
 def collapse_doubled_tail(title: str) -> str | None:
-    """If title ends with the same word(s) twice with no separator, drop one,
-    and strip the boilerplate "Welcome to IT for Change " site-name prefix
-    when there is a real page name behind it.
+    """Strip the doubled-page-name tail Drupal's template produced on
+    Joomla-era /events/* captures, e.g.:
 
-    "Welcome to IT for Change wsis iiwsis ii" -> "wsis ii"
-    "Networks | IT for Change"                -> None (unchanged)
+        "Welcome to IT for Change wsis iiwsis ii" -> "wsis ii"
+
+    Restricted to titles that begin with the literal "Welcome to IT for
+    Change " prefix so legitimately-ending-with-doubled-letters titles
+    like "ITfC at WSIS Phase II" are left alone (idempotent).
     """
-    m = re.match(r'^(.*?\s)([A-Za-z][\w]*(?:\s+[A-Za-z][\w]*)*)\2$', title)
+    needle = SITE_PREFIX + ' '
+    if not title.startswith(needle):
+        return None
+    tail = title[len(needle):]
+    m = re.match(r'^([A-Za-z][\w]*(?:\s+[A-Za-z][\w]*)*)\1$', tail)
     if not m:
         return None
-    prefix, page = m.group(1).rstrip(), m.group(2).strip()
-    if prefix == SITE_PREFIX and page:
-        fixed = page
-    else:
-        fixed = f'{prefix} {page}'.strip()
-    if fixed == title.strip():
-        return None
-    return fixed
+    return m.group(1).strip() or None
 
 
 def joomla_title_from_body(body: str) -> str | None:
@@ -76,35 +79,53 @@ def event_id(slug: str) -> str | None:
     return m.group(1) if m else None
 
 
+SITE_SUFFIX_RE = re.compile(r'(\s*\|\s*IT for Change\s*)+$', re.IGNORECASE)
+
+
+def strip_site_suffix(title: str) -> str | None:
+    """'Networks | IT for Change' -> 'Networks'.  Returns None if unchanged."""
+    fixed = SITE_SUFFIX_RE.sub('', title).strip()
+    if fixed and fixed != title.strip():
+        return fixed
+    return None
+
+
 def fix_page(p: dict, joomla_titles: dict[str, str]) -> tuple[bool, str]:
     """Returns (changed, reason)."""
     slug = (p.get('slug') or '').lower()
-    if not (slug.startswith('events/') or slug == 'events'):
-        return False, ''
     title = p.get('title') or ''
     body = p.get('body_html') or ''
 
-    # 1. Joomla-quality title available for this event id? prefer it.
-    eid = event_id(slug)
-    if eid and eid in joomla_titles:
-        good = joomla_titles[eid]
-        if good and good.lower() != title.lower():
-            p['title'] = good
-            return True, f'promoted: -> {good!r}'
+    is_event = slug.startswith('events/') or slug == 'events'
 
-    # 2. Joomla page itself, but lookup didn't fire (e.g. unique id) — pull
-    #    contentpagetitle from body.
-    if title.strip() in ('Welcome to IT for Change', 'Welcome to IT for Change ',):
-        better = joomla_title_from_body(body)
-        if better and better.lower() != title.lower():
-            p['title'] = better
-            return True, f'joomla: -> {better!r}'
+    if is_event:
+        # 1. Joomla-quality title available for this event id? prefer it.
+        eid = event_id(slug)
+        if eid and eid in joomla_titles:
+            good = joomla_titles[eid]
+            if good and good.lower() != title.lower():
+                p['title'] = good
+                return True, f'promoted: -> {good!r}'
 
-    # 3. Drupal doubled-tail fallback.
-    fixed = collapse_doubled_tail(title)
-    if fixed:
-        p['title'] = fixed
-        return True, f'doubled: -> {fixed!r}'
+        # 2. Joomla page itself, but lookup didn't fire (e.g. unique id) —
+        #    pull contentpagetitle from body.
+        if title.strip() in ('Welcome to IT for Change', 'Welcome to IT for Change ',):
+            better = joomla_title_from_body(body)
+            if better and better.lower() != title.lower():
+                p['title'] = better
+                return True, f'joomla: -> {better!r}'
+
+        # 3. Drupal doubled-tail fallback (event pages only).
+        fixed = collapse_doubled_tail(title)
+        if fixed:
+            p['title'] = fixed
+            return True, f'doubled: -> {fixed!r}'
+
+    # 4. Trailing " | IT for Change" site-name suffix — applies to any page.
+    stripped = strip_site_suffix(title)
+    if stripped:
+        p['title'] = stripped
+        return True, f'suffix-strip: -> {stripped!r}'
 
     return False, ''
 
