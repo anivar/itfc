@@ -44,5 +44,9 @@ recovered/
 recovered_alt/
 reports/
 warc/
-recovery/
+/recovery/
 scripts/__pycache__/
+
+# recovery toolkit working directories (recreated by the scripts on demand)
+logs/
+data/wayback-pubs/
