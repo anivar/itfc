@@ -204,7 +204,11 @@ def latest_capture(target_url: str) -> tuple[str, str] | None:
     except Exception as e:
         print(f'  CDX error: {e}', file=sys.stderr)
         return None
-    rows = json.loads(data)
+    try:
+        rows = json.loads(data)
+    except json.JSONDecodeError as e:
+        print(f'  CDX returned non-JSON ({len(data)}B): {e}', file=sys.stderr)
+        return None
     if len(rows) <= 1:
         return None
     ts, original = rows[-1]
@@ -381,6 +385,8 @@ def main() -> int:
             if cap is None:
                 print('-> no capture')
                 log.append({'path': path, 'status': 'no-capture'})
+                if args.checkpoint_every and i % args.checkpoint_every == 0:
+                    flush()
                 time.sleep(args.sleep)
                 continue
             ts, original = cap
@@ -389,12 +395,16 @@ def main() -> int:
             except Exception as e:
                 print(f'-> fetch error: {e}')
                 log.append({'path': path, 'ts': ts, 'status': f'error: {e}'})
+                if args.checkpoint_every and i % args.checkpoint_every == 0:
+                    flush()
                 time.sleep(args.sleep)
                 continue
         body, title = extract_body_and_title(html_text)
         if not body:
             print(f'-> ts={ts} but no extractable body ({len(html_text)}B)')
             log.append({'path': path, 'ts': ts, 'status': 'no-body'})
+            if args.checkpoint_every and i % args.checkpoint_every == 0:
+                flush()
             time.sleep(args.sleep)
             continue
         body = normalize_internal(body)
