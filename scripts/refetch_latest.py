@@ -370,76 +370,73 @@ def main() -> int:
             write_shards(files, by_slug)
 
     for i, path in enumerate(seeds, 1):
-        target = f'https://itforchange.net{path}' if path.startswith('/') else f'https://itforchange.net/{path}'
-        slug = slug_from_path(path) or 'index'
-        print(f'[{i:3d}/{len(seeds)}] {slug}', end=' ', flush=True)
+        # Per-iteration teardown: flush the checkpoint at the configured
+        # cadence and pace the next request. Runs after every outcome
+        # (success, no-capture, fetch error, no-body) so partial progress
+        # is preserved even on long-running batches.
+        try:
+            target = f'https://itforchange.net{path}' if path.startswith('/') else f'https://itforchange.net/{path}'
+            slug = slug_from_path(path) or 'index'
+            print(f'[{i:3d}/{len(seeds)}] {slug}', end=' ', flush=True)
 
-        # Special case: homepage / from a local file (CDX often times
-        # out for the bare apex URL; we already have the latest capture).
-        if path in ('/', '') and args.homepage_html and args.homepage_html.is_file():
-            html_text = args.homepage_html.read_text()
-            ts = 'local'
-            print('-> using --homepage-html', end=' ')
-        else:
-            cap = latest_capture(target)
-            if cap is None:
-                print('-> no capture')
-                log.append({'path': path, 'status': 'no-capture'})
-                if args.checkpoint_every and i % args.checkpoint_every == 0:
-                    flush()
-                time.sleep(args.sleep)
+            # Special case: homepage / from a local file (CDX often times
+            # out for the bare apex URL; we already have the latest capture).
+            if path in ('/', '') and args.homepage_html and args.homepage_html.is_file():
+                html_text = args.homepage_html.read_text()
+                ts = 'local'
+                print('-> using --homepage-html', end=' ')
+            else:
+                cap = latest_capture(target)
+                if cap is None:
+                    print('-> no capture')
+                    log.append({'path': path, 'status': 'no-capture'})
+                    continue
+                ts, original = cap
+                try:
+                    html_text = fetch_capture(ts, original)
+                except Exception as e:
+                    print(f'-> fetch error: {e}')
+                    log.append({'path': path, 'ts': ts, 'status': f'error: {e}'})
+                    continue
+            body, title = extract_body_and_title(html_text)
+            if not body:
+                print(f'-> ts={ts} but no extractable body ({len(html_text)}B)')
+                log.append({'path': path, 'ts': ts, 'status': 'no-body'})
                 continue
-            ts, original = cap
-            try:
-                html_text = fetch_capture(ts, original)
-            except Exception as e:
-                print(f'-> fetch error: {e}')
-                log.append({'path': path, 'ts': ts, 'status': f'error: {e}'})
-                if args.checkpoint_every and i % args.checkpoint_every == 0:
-                    flush()
-                time.sleep(args.sleep)
-                continue
-        body, title = extract_body_and_title(html_text)
-        if not body:
-            print(f'-> ts={ts} but no extractable body ({len(html_text)}B)')
-            log.append({'path': path, 'ts': ts, 'status': 'no-body'})
+            body = normalize_internal(body)
+            log.append({
+                'path': path, 'ts': ts, 'slug': slug,
+                'bytes': len(body), 'title': title or '',
+                'status': 'ok',
+            })
+            done_ok.add(path)
+            if args.apply:
+                existing = by_slug.get(slug)
+                if existing is not None:
+                    f, page = existing
+                    page['body_html'] = body
+                    if title:
+                        page['title'] = title
+                    updated += 1
+                    print(f'-> updated ({len(body)}B, ts={ts})')
+                else:
+                    # New slug: drop into the smallest shard for balance
+                    target_file = min(files, key=lambda x: x.stat().st_size)
+                    page = {
+                        'slug': slug,
+                        'title': title or slug,
+                        'body_html': body,
+                        'aliases': [],
+                    }
+                    by_slug[slug] = (target_file, page)
+                    inserted += 1
+                    print(f'-> inserted ({len(body)}B, ts={ts})')
+            else:
+                print(f'-> ts={ts}, {len(body)}B (dry-run)')
+        finally:
             if args.checkpoint_every and i % args.checkpoint_every == 0:
                 flush()
             time.sleep(args.sleep)
-            continue
-        body = normalize_internal(body)
-        log.append({
-            'path': path, 'ts': ts, 'slug': slug,
-            'bytes': len(body), 'title': title or '',
-            'status': 'ok',
-        })
-        done_ok.add(path)
-        if args.apply:
-            existing = by_slug.get(slug)
-            if existing is not None:
-                f, page = existing
-                page['body_html'] = body
-                if title:
-                    page['title'] = title
-                updated += 1
-                print(f'-> updated ({len(body)}B, ts={ts})')
-            else:
-                # New slug: drop into the smallest shard for balance
-                target_file = min(files, key=lambda x: x.stat().st_size)
-                page = {
-                    'slug': slug,
-                    'title': title or slug,
-                    'body_html': body,
-                    'aliases': [],
-                }
-                by_slug[slug] = (target_file, page)
-                inserted += 1
-                print(f'-> inserted ({len(body)}B, ts={ts})')
-        else:
-            print(f'-> ts={ts}, {len(body)}B (dry-run)')
-        if args.checkpoint_every and i % args.checkpoint_every == 0:
-            flush()
-        time.sleep(args.sleep)
 
     flush()
     print(f'\nlog: {LOG}')
