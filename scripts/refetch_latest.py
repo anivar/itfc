@@ -65,10 +65,16 @@ class _Body(HTMLParser):
         if tag == 'title':
             self._title_capturing = True
         if self.capture_at is None:
+            cls = a.get('class') or ''
             if (
                 tag == 'div' and a.get('id') == 'content'
             ) or (
-                tag == 'div' and 'region-content' in (a.get('class') or '')
+                tag == 'div' and 'region-content' in cls
+            ) or (
+                # Joomla 1.5 legacy pages (pre-Drupal /events/*.html era)
+                # used a table-based layout; the body is the first
+                # <table class="contentpaneopen">.
+                tag == 'table' and 'contentpaneopen' in cls
             ) or tag in self.PRIORITY:
                 self.capture_at = len(self.stack)
                 self.target_tag = tag
@@ -88,7 +94,15 @@ class _Body(HTMLParser):
                 and tag == self.target_tag
                 and self.target_tag is not None
             ):
-                self.found.setdefault(self.target_tag, ''.join(self.buf))
+                # Tables (Joomla 1.5 layout) come in pairs — title table +
+                # body table both have class="contentpaneopen". Concatenate
+                # so the whole content area is captured. Other targets keep
+                # first-match semantics.
+                key = self.target_tag
+                if key == 'table' and key in self.found:
+                    self.found[key] = self.found[key] + ''.join(self.buf)
+                else:
+                    self.found.setdefault(key, ''.join(self.buf))
                 self.capture_at = None
                 self.target_tag = None
                 self.buf = []
@@ -113,7 +127,7 @@ class _Body(HTMLParser):
 def extract_body_and_title(html_text: str) -> tuple[str, str | None]:
     p = _Body()
     p.feed(html_text)
-    for tag in ('div', 'main', 'article'):
+    for tag in ('div', 'main', 'article', 'table'):
         if tag in p.found:
             inner = p.found[tag]
             # Strip outer wrapper to keep only inner content
