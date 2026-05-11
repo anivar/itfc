@@ -1,0 +1,24 @@
+---
+// /resources_all = page 0 of the publications listing. Displaces the
+// catch-all [...slug] for this URL because static routes win over rest
+// params in Astro.
+import Site from '~/layouts/Site.astro';
+import PublicationsList from '~/components/PublicationsList.astro';
+import publications from '~/data/publications.json';
+
+const pageSize = 10;
+const totalCount = (publications as unknown[]).length;
+---
+<Site
+  title="Publications"
+  description={`Browse ${totalCount} publications, papers, and reports from IT for Change.`}
+  canonicalPath="/resources_all"
+  bodyClass="page-title--Publications path-resources-all"
+>
+  <div class="page">
+    <article class="content">
+      <h1 class="page-header">Publications</h1>
+      <PublicationsList page={0} pageSize={pageSize} />
+    </article>
+  </div>
+</Site>

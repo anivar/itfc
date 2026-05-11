@@ -1,0 +1,102 @@
+---
+// Renders one paginated slice of /resources_all. Mirrors the Drupal
+// Views markup the original site emitted (`.view-resources .views-row`)
+// so the brand stylesheet styles tiles natively.
+import publications from '~/data/publications.json';
+import { withBase } from '~/lib/with-base';
+
+interface Pub {
+  slug: string;
+  title: string;
+  summary_html: string;
+  image: string | null;
+  year: string;
+}
+
+interface Props {
+  page: number;       // zero-indexed
+  pageSize: number;
+}
+
+const { page, pageSize } = Astro.props as Props;
+const pubs = publications as Pub[];
+const totalPages = Math.ceil(pubs.length / pageSize);
+const start = page * pageSize;
+const slice = pubs.slice(start, start + pageSize);
+
+// Build pagination link list à la Drupal pager
+const pageHref = (n: number) =>
+  withBase(n === 0 ? '/resources_all' : `/resources_all/page/${n}`);
+
+// Compact pager: first ±3 around current ± last, with "…" gaps
+const pagerNums: (number | '…')[] = [];
+const around = new Set<number>();
+[0, 1, totalPages - 2, totalPages - 1, page - 2, page - 1, page, page + 1, page + 2]
+  .filter((n) => n >= 0 && n < totalPages)
+  .forEach((n) => around.add(n));
+let prev = -2;
+for (const n of [...around].sort((a, b) => a - b)) {
+  if (n - prev > 1) pagerNums.push('…');
+  pagerNums.push(n);
+  prev = n;
+}
+---
+<div class="view view-resources view-id-resources view-display-id-page_1">
+  <div class="view-content">
+    {slice.map((pub) => (
+      <div class="views-row">
+        <div class="views-field views-field-title">
+          <h3 class="field-content">
+            <a href={withBase(`/${pub.slug}`)} hreflang="en">{pub.title}</a>
+          </h3>
+        </div>
+        {pub.summary_html && (
+          <div class="views-field views-field-body">
+            <div class="field-content" set:html={pub.summary_html}></div>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  {totalPages > 1 && (
+    <nav class="pager" role="navigation" aria-labelledby="pagination-heading">
+      <h4 id="pagination-heading" class="visually-hidden">Pagination</h4>
+      <ul class="pager__items js-pager__items">
+        {page > 0 && (
+          <li class="pager__item pager__item--first">
+            <a href={pageHref(0)} title="Go to first page">‹‹ First</a>
+          </li>
+        )}
+        {page > 0 && (
+          <li class="pager__item pager__item--previous">
+            <a href={pageHref(page - 1)} title="Go to previous page" rel="prev">‹ Previous</a>
+          </li>
+        )}
+        {pagerNums.map((n) =>
+          n === '…' ? (
+            <li class="pager__item pager__item--ellipsis" aria-hidden="true">…</li>
+          ) : n === page ? (
+            <li class="pager__item is-active">
+              <span aria-current="page">{n + 1}</span>
+            </li>
+          ) : (
+            <li class="pager__item">
+              <a href={pageHref(n)} title={`Go to page ${n + 1}`}>{n + 1}</a>
+            </li>
+          ),
+        )}
+        {page < totalPages - 1 && (
+          <li class="pager__item pager__item--next">
+            <a href={pageHref(page + 1)} title="Go to next page" rel="next">Next ›</a>
+          </li>
+        )}
+        {page < totalPages - 1 && (
+          <li class="pager__item pager__item--last">
+            <a href={pageHref(totalPages - 1)} title="Go to last page">Last ››</a>
+          </li>
+        )}
+      </ul>
+    </nav>
+  )}
+</div>
