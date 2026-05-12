@@ -343,6 +343,15 @@
 .itfc-tabs > .itfc-tab-input:nth-of-type(2):checked ~ .itfc-tab-panels .itfc-tab-panel-2 {
   display: block;
 }
+/* The brand v5 stylesheet hides the "inactive default" view-block on the
+ * events and networks landings (`.block-views-blockevents-page-view-block-1`
+ * and `.block-views-blocknetworks-page-view-block-2`) because the original
+ * Drupal site had JS toggling which one was visible. Inside our reconstructed
+ * tab panels we want the block visible whenever its parent tab is shown. */
+.itfc-tab-panel .block-views-blockevents-page-view-block-1,
+.itfc-tab-panel .block-views-blocknetworks-page-view-block-2 {
+  display: block;
+}
 @media (max-width: 480px) {
   .itfc-tab-list { gap: 0.25em; }
   .itfc-tab { padding: 0.5em 0.75em; font-size: 0.95em; }
