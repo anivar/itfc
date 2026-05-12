@@ -28,11 +28,12 @@ export async function getStaticPaths() {
   // category index pages; many were captured by Wayback as title-only HTML
   // (no body). They render as blank pages and bloat the sitemap. Drop the
   // empty ones; substantive taxonomy pages with real body content stay.
+  // node/N pages are NOT filtered even if short — several are legit
+  // carousel-slide / feature-card landings (e.g. node/1722 COVID-19 RELIEF).
   const wordCount = (html: string) =>
     (html.replace(/<[^>]+>/g, ' ').match(/\w+/g) || []).length;
   const isEmptyShell = (p: Page) =>
-    (p.slug.startsWith('taxonomy/term/') || p.slug.startsWith('node/')) &&
-    wordCount(p.body_html || '') < 30;
+    p.slug.startsWith('taxonomy/term/') && wordCount(p.body_html || '') < 30;
   // Wayback captured ~30 inclusionroundtable2014/* URLs as the legacy CMS's
   // "Fatal Error." page (engine 500'd at capture time). They have no real
   // content, just an error template. Drop them.
