@@ -10,8 +10,13 @@ export const GET: APIRoute = ({ site }) => {
   // `site` is the origin (no base) per astro.config; BASE_URL has the
   // configured /<base>/ prefix. Combine them so the sitemap link points
   // at the actual deployed location even on the gh.io subpath.
+  // configure-pages sometimes emits base_path without a trailing slash
+  // (e.g. "/itfc" rather than "/itfc/"). Without the trailing slash the
+  // concat below produces "/itfcsitemap-index.xml" — fix by normalising.
+  const baseRaw = import.meta.env.BASE_URL || '/';
+  const base = baseRaw.endsWith('/') ? baseRaw : `${baseRaw}/`;
   const sitemap = site
-    ? new URL(`${import.meta.env.BASE_URL}sitemap-index.xml`.replace(/\/+/g, '/'), site).toString()
+    ? new URL(`${base}sitemap-index.xml`, site).toString()
     : '/sitemap-index.xml';
   const body = [
     'User-agent: *',
