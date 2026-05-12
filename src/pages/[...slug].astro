@@ -79,3 +79,108 @@ const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
     </article>
   </div>
 </Site>
+{page.slug === 'events' && (
+  <script is:inline>
+    /* Client-side pagination for the /events landing.
+     *
+     * The captured body_html dumps all 500+ event rows inline. Lazy
+     * image loading helps initial paint but the DOM is still heavy
+     * and scrolling 500 cards is unkind. Slice .views-row into pages
+     * of N inside each tab panel and render a pager bar.
+     *
+     * Graceful degradation: if this script doesn't run (JS off,
+     * older browser, etc.), all rows stay visible. */
+    (function () {
+      var PER_PAGE = 12;
+
+      function paginate(panel) {
+        var content = panel.querySelector('.view-content');
+        if (!content) return;
+        var rows = Array.prototype.slice.call(
+          content.querySelectorAll(':scope > .views-row')
+        );
+        if (rows.length <= PER_PAGE) return;
+
+        var totalPages = Math.ceil(rows.length / PER_PAGE);
+        var current = 1;
+
+        var pager = document.createElement('nav');
+        pager.className = 'itfc-pager';
+        pager.setAttribute('aria-label', 'Events pagination');
+        panel.appendChild(pager);
+
+        function render() {
+          for (var i = 0; i < rows.length; i++) {
+            var page = Math.floor(i / PER_PAGE) + 1;
+            rows[i].style.display = page === current ? '' : 'none';
+          }
+          pager.innerHTML = '';
+          var mk = function (label, target, opts) {
+            opts = opts || {};
+            var b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'itfc-pager-btn' + (opts.active ? ' is-active' : '');
+            b.textContent = label;
+            if (opts.disabled) b.disabled = true;
+            if (opts.aria) b.setAttribute('aria-label', opts.aria);
+            b.addEventListener('click', function () {
+              current = target;
+              render();
+              panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            pager.appendChild(b);
+          };
+
+          mk('‹ Prev', Math.max(1, current - 1), {
+            disabled: current === 1, aria: 'Previous page',
+          });
+
+          // Show a compact window of page numbers around the current page
+          // (first, last, current ± 2, with ellipses).
+          var shown = {};
+          var add = function (n) { shown[n] = true; };
+          add(1); add(totalPages);
+          for (var d = -2; d <= 2; d++) {
+            var n = current + d;
+            if (n >= 1 && n <= totalPages) add(n);
+          }
+          var nums = Object.keys(shown).map(Number).sort(function (a, b) { return a - b; });
+          for (var i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] !== nums[i - 1] + 1) {
+              var sep = document.createElement('span');
+              sep.className = 'itfc-pager-sep';
+              sep.textContent = '…';
+              pager.appendChild(sep);
+            }
+            (function (n) {
+              mk(String(n), n, { active: n === current, aria: 'Page ' + n });
+            })(nums[i]);
+          }
+
+          mk('Next ›', Math.min(totalPages, current + 1), {
+            disabled: current === totalPages, aria: 'Next page',
+          });
+
+          var info = document.createElement('span');
+          info.className = 'itfc-pager-info';
+          var start = (current - 1) * PER_PAGE + 1;
+          var end = Math.min(rows.length, current * PER_PAGE);
+          info.textContent = start + '–' + end + ' of ' + rows.length;
+          pager.appendChild(info);
+        }
+
+        render();
+      }
+
+      function init() {
+        var panels = document.querySelectorAll('.itfc-tab-panel');
+        for (var i = 0; i < panels.length; i++) paginate(panels[i]);
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+)}

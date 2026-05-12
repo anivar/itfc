@@ -293,6 +293,18 @@
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
 
+/* Anchors whose href no longer resolves are rewritten to <span class="dead-link">
+ * at build time (scripts/neutralize_dead_links.py). Render them as inline
+ * text — slightly dimmed, dotted-underline so the reader can tell the
+ * original prose had a link there. No hover state because there's nothing
+ * to click. */
+.dead-link {
+  color: inherit;
+  text-decoration: underline dotted #b3bac3;
+  text-underline-offset: 2px;
+  cursor: help;
+}
+
 /* CSS-only tabs for /networks and /events landings. The original Drupal
  * site rendered the two view-display blocks (block_1, block_2) as a tab
  * pair; the Wayback-captured HTML lost the tab JS so the blocks stack
@@ -420,6 +432,55 @@
 .itfc-tab-panel .views-field-view-node a:hover,
 .itfc-tab-panel .views-field-field-link-to-network a:hover {
   text-decoration: underline;
+}
+
+/* Pager bar appended by the events pagination script. Buttons mirror
+ * the brand's tab styling so they read as part of the same UI. */
+.itfc-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4em;
+  margin: 1.5em 0 0.5em;
+  padding-top: 1em;
+  border-top: 1px solid #e3e7ed;
+}
+.itfc-pager-btn {
+  appearance: none;
+  background: #ffffff;
+  border: 1px solid #d8dde2;
+  border-radius: 3px;
+  color: #1f4f8b;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  padding: 0.4em 0.8em;
+  min-width: 2.4em;
+  transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+}
+.itfc-pager-btn:hover:not(:disabled):not(.is-active) {
+  background: #f4f6f9;
+  border-color: #1f4f8b;
+}
+.itfc-pager-btn:disabled {
+  color: #a8aeb6;
+  cursor: not-allowed;
+}
+.itfc-pager-btn.is-active {
+  background: #1f4f8b;
+  border-color: #1f4f8b;
+  color: #ffffff;
+  cursor: default;
+}
+.itfc-pager-sep {
+  color: #8a929d;
+  padding: 0 0.2em;
+  user-select: none;
+}
+.itfc-pager-info {
+  margin-left: auto;
+  color: #5a6573;
+  font-size: 0.9em;
 }
 
 /* Networks: tight 3-up grid of small logo cards (24 items, near-square logos). */
