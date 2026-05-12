@@ -292,3 +292,58 @@
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
+
+/* CSS-only tabs for /networks and /events landings. The original Drupal
+ * site rendered the two view-display blocks (block_1, block_2) as a tab
+ * pair; the Wayback-captured HTML lost the tab JS so the blocks stack
+ * vertically. We rebuild tabs at build time (see src/lib/views-to-tabs.ts)
+ * and switch panels with the radio-button + sibling-selector trick — no JS. */
+.itfc-tabs {
+  margin: 1.5em 0;
+}
+.itfc-tabs > .itfc-tab-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.itfc-tab-list {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid #d8dde2;
+  margin-bottom: 1.25em;
+  flex-wrap: wrap;
+}
+.itfc-tab {
+  padding: 0.6em 1.25em;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4a5560;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+.itfc-tab:hover {
+  color: #1f4f8b;
+}
+.itfc-tabs > .itfc-tab-input:nth-of-type(1):checked ~ .itfc-tab-list .itfc-tab[for$="-1"],
+.itfc-tabs > .itfc-tab-input:nth-of-type(2):checked ~ .itfc-tab-list .itfc-tab[for$="-2"] {
+  color: #1f4f8b;
+  border-bottom-color: #1f4f8b;
+}
+.itfc-tabs > .itfc-tab-input:focus-visible ~ .itfc-tab-list .itfc-tab[for$="-1"],
+.itfc-tabs > .itfc-tab-input:focus-visible ~ .itfc-tab-list .itfc-tab[for$="-2"] {
+  outline: 2px solid #1f4f8b;
+  outline-offset: 2px;
+}
+.itfc-tab-panel {
+  display: none;
+}
+.itfc-tabs > .itfc-tab-input:nth-of-type(1):checked ~ .itfc-tab-panels .itfc-tab-panel-1,
+.itfc-tabs > .itfc-tab-input:nth-of-type(2):checked ~ .itfc-tab-panels .itfc-tab-panel-2 {
+  display: block;
+}
+@media (max-width: 480px) {
+  .itfc-tab-list { gap: 0.25em; }
+  .itfc-tab { padding: 0.5em 0.75em; font-size: 0.95em; }
+}

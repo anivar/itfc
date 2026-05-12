@@ -363,6 +363,17 @@ def main() -> int:
                 canonicalized.append(canon)
             seeds = sorted(set(canonicalized))
 
+    # Drop confirmed wiki spam slugs so they can never re-enter via Wayback.
+    try:
+        from drop_wiki_spam import SPAM_SLUGS  # type: ignore
+        deny = {'/' + s for s in SPAM_SLUGS}
+        before = len(seeds)
+        seeds = [s for s in seeds if s not in deny]
+        if before != len(seeds):
+            print(f'denylist: dropped {before - len(seeds)} spam paths')
+    except Exception as e:
+        print(f'WARN: could not load spam denylist: {e}')
+
     if done_ok:
         seeds = [s for s in seeds if s not in done_ok]
     if args.limit:

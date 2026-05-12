@@ -2,6 +2,7 @@
 import pages from '~/lib/pages';
 import Site from '~/layouts/Site.astro';
 import { withBase } from '~/lib/with-base';
+import { tabifyTwoViewBlocks } from '~/lib/views-to-tabs';
 
 type Page = {
   slug: string;
@@ -46,7 +47,12 @@ export async function getStaticPaths() {
 }
 
 const { page } = Astro.props as { page: Page };
-const html = withBase(page.body_html);
+// Landings whose body holds two Drupal view-display blocks (block_1 / block_2)
+// originally rendered as switchable tabs. Reconstruct that here.
+const tabbed = page.slug === 'networks' || page.slug === 'events'
+  ? tabifyTwoViewBlocks(page.body_html, { idPrefix: `tabs-${page.slug}` })
+  : page.body_html;
+const html = withBase(tabbed);
 const description = (html || '')
   .replace(/<[^>]+>/g, ' ')
   .replace(/\s+/g, ' ')
