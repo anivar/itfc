@@ -493,3 +493,76 @@
 .page-title--Events .itfc-tab-panel .view-content {
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 }
+
+/* The same lost-Bootstrap-grid problem affects every other Drupal Views
+ * listing landing on the recovered site. Apply the same card-grid
+ * treatment to .view-content blocks that sit outside of tabs. */
+.path-team .view-content,
+.path-Team .view-content,
+.path-blogs .view-content,
+.path-research .view-content,
+.path-RightToKnow .view-content,
+.path-right-to-know .view-content,
+.path-courses-curriculum .view-content,
+.path-curriculum-courses .view-content {
+  display: grid;
+  gap: 1.5em;
+  margin-bottom: 1.5em;
+}
+.path-team .view-content > .views-row,
+.path-Team .view-content > .views-row,
+.path-blogs .view-content > .views-row,
+.path-research .view-content > .views-row,
+.path-RightToKnow .view-content > .views-row,
+.path-right-to-know .view-content > .views-row,
+.path-courses-curriculum .view-content > .views-row,
+.path-curriculum-courses .view-content > .views-row {
+  background: #ffffff;
+  border: 1px solid #e3e7ed;
+  border-radius: 4px;
+  padding: 1.2em 1.2em 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.path-team .views-field img.img-responsive,
+.path-Team .views-field img.img-responsive,
+.path-RightToKnow .views-field img.img-responsive,
+.path-right-to-know .views-field img.img-responsive {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+.path-team .views-field-title,
+.path-Team .views-field-title,
+.path-blogs .views-field-title,
+.path-RightToKnow .views-field-title,
+.path-right-to-know .views-field-title {
+  font-weight: 700;
+  color: #1f4f8b;
+}
+.path-blogs .views-field-created,
+.path-blogs .views-field-field-author-new,
+.path-research .views-field-field-year,
+.path-research .views-field-thematic-areas {
+  font-size: 0.92em;
+  color: #5a6573;
+}
+
+/* Per-page column counts (matched to row content shape). */
+.path-team .view-content,
+.path-Team .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+.path-RightToKnow .view-content,
+.path-right-to-know .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.path-blogs .view-content,
+.path-research .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+}
+.path-courses-curriculum .view-content,
+.path-curriculum-courses .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}

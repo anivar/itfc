@@ -21,12 +21,17 @@ import { bp } from '~/lib/with-base';
         id="block-itfc-agov-subtheme-searchform-3"
         role="search"
       >
+        {/* Drupal's /search-view endpoint doesn't exist on this static
+            mirror, so the form delegates to a Google site-search scoped
+            to the deployed host. as_sitesearch limits results to the
+            current origin so visitors stay on the archive. */}
         <form
-          action={bp('/search-view')}
+          action="https://www.google.com/search"
           method="get"
           id="search-block-form"
           accept-charset="UTF-8"
         >
+          <input type="hidden" name="as_sitesearch" value="anivar.github.io/itfc" />
           <div class="form-item js-form-item form-type-search js-form-type-search form-item-keys js-form-item-keys form-no-label form-group">
             <label for="edit-keys" class="control-label sr-only">Search</label>
             <div class="input-group">
@@ -37,7 +42,7 @@ import { bp } from '~/lib/with-base';
                 placeholder="Search"
                 type="search"
                 id="edit-keys"
-                name="keys"
+                name="q"
                 value=""
                 size="15"
                 maxlength="128"

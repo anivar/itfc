@@ -79,35 +79,42 @@ const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
     </article>
   </div>
 </Site>
-{page.slug === 'events' && (
+{['events','blogs','team','Team','research','RightToKnow','right-to-know','courses-curriculum','curriculum-courses'].includes(page.slug) && (
   <script is:inline>
-    /* Client-side pagination for the /events landing.
+    /* Client-side pagination for heavy listing landings.
      *
-     * The captured body_html dumps all 500+ event rows inline. Lazy
+     * Several captured body_html blobs dump 20–500 rows inline. Lazy
      * image loading helps initial paint but the DOM is still heavy
-     * and scrolling 500 cards is unkind. Slice .views-row into pages
-     * of N inside each tab panel and render a pager bar.
+     * and scrolling hundreds of cards is unkind. Slice .views-row
+     * into pages of N inside each .view-content block (whether it
+     * sits inside a tab panel or directly in the article) and render
+     * a pager bar.
      *
      * Graceful degradation: if this script doesn't run (JS off,
      * older browser, etc.), all rows stay visible. */
     (function () {
       var PER_PAGE = 12;
 
-      function paginate(panel) {
-        var content = panel.querySelector('.view-content');
-        if (!content) return;
+      function paginate(content) {
         var rows = Array.prototype.slice.call(
           content.querySelectorAll(':scope > .views-row')
         );
         if (rows.length <= PER_PAGE) return;
+        // Pager goes immediately after the .view-content block.
+        var panel = content;
 
         var totalPages = Math.ceil(rows.length / PER_PAGE);
         var current = 1;
 
         var pager = document.createElement('nav');
         pager.className = 'itfc-pager';
-        pager.setAttribute('aria-label', 'Events pagination');
-        panel.appendChild(pager);
+        pager.setAttribute('aria-label', 'Pagination');
+        // Insert after .view-content so the bar sits below the cards.
+        if (panel.parentNode) {
+          panel.parentNode.insertBefore(pager, panel.nextSibling);
+        } else {
+          panel.appendChild(pager);
+        }
 
         function render() {
           for (var i = 0; i < rows.length; i++) {
@@ -126,7 +133,7 @@ const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
             b.addEventListener('click', function () {
               current = target;
               render();
-              panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              content.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
             pager.appendChild(b);
           };
@@ -173,8 +180,13 @@ const bodyClass = `page-title--${titleSlug} path-${pathSlug}`;
       }
 
       function init() {
-        var panels = document.querySelectorAll('.itfc-tab-panel');
-        for (var i = 0; i < panels.length; i++) paginate(panels[i]);
+        // On /events and /networks the .view-content blocks live inside
+        // .itfc-tab-panel wrappers; on /blogs, /team, /research, etc.
+        // they sit directly in the article. Match all .view-content
+        // blocks and let paginate() short-circuit if rows fit on one
+        // page.
+        var contents = document.querySelectorAll('.view-content');
+        for (var i = 0; i < contents.length; i++) paginate(contents[i]);
       }
       if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
