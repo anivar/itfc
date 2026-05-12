@@ -299,32 +299,39 @@
  * vertically. We rebuild tabs at build time (see src/lib/views-to-tabs.ts)
  * and switch panels with the radio-button + sibling-selector trick — no JS. */
 .itfc-tabs {
-  margin: 1.5em 0;
+  position: relative;
+  margin: 1.5em 0 2em;
 }
 .itfc-tabs > .itfc-tab-input {
   position: absolute;
   opacity: 0;
   pointer-events: none;
+  width: 1px;
+  height: 1px;
+  margin: 0;
 }
 .itfc-tab-list {
   display: flex;
-  gap: 0;
+  gap: 0.25em;
   border-bottom: 2px solid #d8dde2;
-  margin-bottom: 1.25em;
+  margin-bottom: 1.5em;
   flex-wrap: wrap;
 }
 .itfc-tab {
-  padding: 0.6em 1.25em;
+  padding: 0.7em 1.5em;
   cursor: pointer;
   font-weight: 600;
+  font-size: 1.02em;
   color: #4a5560;
   border-bottom: 3px solid transparent;
   margin-bottom: -2px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, border-color 0.15s, background-color 0.15s;
   user-select: none;
+  letter-spacing: 0.01em;
 }
 .itfc-tab:hover {
   color: #1f4f8b;
+  background-color: #f4f6f9;
 }
 .itfc-tabs > .itfc-tab-input:nth-of-type(1):checked ~ .itfc-tab-list .itfc-tab[for$="-1"],
 .itfc-tabs > .itfc-tab-input:nth-of-type(2):checked ~ .itfc-tab-list .itfc-tab[for$="-2"] {
@@ -353,6 +360,75 @@
   display: block;
 }
 @media (max-width: 480px) {
-  .itfc-tab-list { gap: 0.25em; }
-  .itfc-tab { padding: 0.5em 0.75em; font-size: 0.95em; }
+  .itfc-tab { padding: 0.55em 0.9em; font-size: 0.95em; }
+}
+
+/* The Wayback-captured Drupal Views HTML lost the `.col-sm-3` / `.col-sm-4`
+ * Bootstrap grid wrappers that the live site uses to lay views-row items
+ * out as cards. Rebuild the grid here against the bare .view-content > .views-row
+ * structure that survived. */
+.itfc-tab-panel .view-content {
+  display: grid;
+  gap: 1.5em;
+  margin-bottom: 1.5em;
+}
+.itfc-tab-panel .view-content > .views-row {
+  background: #ffffff;
+  border: 1px solid #e3e7ed;
+  border-radius: 4px;
+  padding: 1.2em 1.2em 1em;
+  display: flex;
+  flex-direction: column;
+}
+.itfc-tab-panel .view-content > .views-row > * {
+  margin-bottom: 0.6em;
+}
+.itfc-tab-panel .view-content > .views-row > *:last-child {
+  margin-bottom: 0;
+}
+.itfc-tab-panel .views-field img.img-responsive {
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+  margin-bottom: 0.4em;
+}
+.itfc-tab-panel .views-field-title a,
+.itfc-tab-panel .views-field-title {
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.3;
+  color: #1f4f8b;
+}
+.itfc-tab-panel .views-field-field-event-date,
+.itfc-tab-panel .views-field-field-location {
+  font-size: 0.92em;
+  color: #5a6573;
+}
+.itfc-tab-panel .views-field-body {
+  flex: 1 1 auto;
+  font-size: 0.95em;
+  color: #2c3038;
+}
+.itfc-tab-panel .views-field-view-node a,
+.itfc-tab-panel .views-field-field-link-to-network a {
+  display: inline-block;
+  margin-top: 0.4em;
+  font-weight: 600;
+  color: #1f4f8b;
+  text-decoration: none;
+}
+.itfc-tab-panel .views-field-view-node a:hover,
+.itfc-tab-panel .views-field-field-link-to-network a:hover {
+  text-decoration: underline;
+}
+
+/* Networks: tight 3-up grid of small logo cards (24 items, near-square logos). */
+.page-title--Networks .itfc-tab-panel .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+/* Events: roomier 2-up grid (often only 1-up on narrow viewports) — event
+ * tiles carry banner-aspect images plus a paragraph of body text. */
+.page-title--Events .itfc-tab-panel .view-content {
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
 }
